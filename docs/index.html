@@ -83,7 +83,7 @@ a{color:inherit}
 .compass .why{color:var(--ink-muted);font-size:15px;margin:14px 0 0;line-height:1.8}
 .compass .edit{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;color:var(--ink-muted);border:1px solid var(--ink-line);border-radius:99px;padding:4px 12px}
 .compass:hover .edit{color:var(--ink-fg);border-color:rgba(255,255,255,.3)}
-.hero-t{font-weight:900;font-size:clamp(2rem,9vw,3.2rem);line-height:1.2;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.hero-t{font-weight:900;font-size:clamp(1.8rem,8vw,2.6rem);line-height:1.2;margin:0;letter-spacing:-.01em;text-wrap:balance}
 .hero-p{margin:0;color:var(--ink-muted);font-size:15px;line-height:1.8;max-width:34em}
 
 .srow{display:flex;align-items:center;gap:6px;margin-top:10px;padding:8px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--ink-line)}
@@ -343,6 +343,40 @@ body.setup .swatches button[aria-pressed="true"]::after{border-color:#fff}
 .plan .if{font-size:13px;color:var(--muted)}
 .plan .then{font-weight:700}
 
+/* simple today list */
+.today-h{display:flex;align-items:center;gap:10px}
+.today-h h2{font-size:22px;font-weight:800;margin:0;flex:1}
+.today-h .num{font-family:var(--f-disp);font-weight:700;color:var(--muted)}
+.pbar{height:6px;border-radius:9px;background:var(--soft);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--duo);border-radius:9px;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.item.tap{cursor:pointer;user-select:none;-webkit-user-select:none;transition:background .15s}
+.item.tap:active{background:var(--soft)}
+.item.tap .check{pointer-events:none}
+.item .t>span:first-child+span{display:inline}
+.tg{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-right:6px;vertical-align:2px;background:var(--soft);color:var(--muted)}
+.tg.k1{background:var(--ink);color:var(--volt)}
+.tg.km{background:var(--primary);color:#fff}
+.edit-on .item.tap .check{opacity:.35}
+.addrow{display:flex;gap:8px}
+.addrow .add{flex:1;padding:12px}
+.subtle.c{align-self:center;padding:4px}
+.quick{display:flex;gap:10px}
+.qbtn{flex:1;display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);font-weight:700;font-size:15px;text-align:left;min-width:0}
+.qbtn .qi{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--duo);color:#fff;flex:none}
+.qbtn.dark{background:var(--ink);color:var(--ink-fg)}
+.qbtn.dark .qi{background:rgba(255,255,255,.12)}
+.qbtn small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.qbtn.dark small{color:var(--ink-muted)}
+.moodrow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:18px;background:var(--card);box-shadow:var(--shadow)}
+.moodrow>span{font-size:14px;font-weight:700;white-space:nowrap}
+.moodrow .mood{flex:1;gap:4px}
+.moodrow .mood button{padding:6px 0}
+.moodrow .mood button b{font-size:16px}
+.fxp{position:fixed;z-index:95;pointer-events:none;font-family:var(--f-disp);font-weight:800;font-size:18px;color:var(--primary);animation:fxp .9s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes fxp{from{transform:translateY(0);opacity:1}to{transform:translateY(-36px);opacity:0}}
+.ms-r{margin-left:auto;display:flex;gap:6px;align-items:center;flex:none}
+.hero-sub{margin:0;font-size:14px;color:var(--ink-muted)}
+
 /* compass pager */
 .pager{display:flex;align-items:center;gap:0;margin:-10px 0 -6px}
 .pg{height:44px;min-width:28px;display:grid;place-items:center;padding:0 4px}
@@ -478,7 +512,7 @@ canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-in
 <nav class="tabs" aria-label="ページ"><div class="in">
   <a href="#home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 4.5 6 6.5 6 12a6 6 0 01-12 0c0-3.2 2-4.7 2.7-7.3.8 2 1.6 2.6 2.3 2.6 0-3.4-.4-5.2 1-7.3z"/></svg>今日</a>
   <a href="#goals" data-tab="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>目標</a>
-  <a href="#habits" data-tab="habits"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11M4 12h11M4 17h7"/><path d="M16 16.5l2.2 2.2L22 14.5"/></svg>習慣</a>
+  <a href="#record" data-tab="record"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>記録</a>
   <a href="#rewards" data-tab="rewards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8S10.5 3 7.5 3a2.5 2.5 0 000 5M12 8s1.5-5 4.5-5a2.5 2.5 0 010 5"/></svg>ごほうび</a>
 </div></nav>
 
@@ -521,7 +555,7 @@ let S, adding=false;
 const BLANK={text:'',why:'',deadline:'',theme:'ember',goals:[],habits:[],starters:[]};
 const cp=()=>S.compasses[S.cur]||BLANK;
 function normalize(){
-  if(!S||S.sample||(!S.compass&&!S.compasses)){S=fresh();return}
+  if(!S||S.sample||(!S.compass&&!S.compasses)){S=fresh();}
   if(!S.compasses){const c=S.compass||{};
     S.compasses=c.text?[{id:uid(),text:c.text,why:c.why||'',deadline:c.deadline||'',theme:'ember',goals:S.goals||[],habits:S.habits||[],
       starters:S.starters||starterSuggestionsFor(c.text).slice(0,2).map(t=>({id:uid(),title:t,log:{}}))}]:[];
@@ -593,7 +627,7 @@ function commit(k,mutate,xp){
   const badge=checkBadges(); save(); render();
   if(party){sfx('fanfare');celebrate(streak(),badge,streak()>stB);}
   else if(badge){sfx('coin');toast('バッジ獲得：'+badge);}
-  else if(!wasA&&isA)toast('今日の目標を達成。+'+DAY_BONUS+' コイン');
+  else if(!wasA&&isA)toast('達成！ +'+DAY_BONUS+' コイン');
   if(xp>0&&levelInfo(S.xp).lv>lvB)setTimeout(()=>{sfx('level');toast('レベル '+levelInfo(S.xp).lv+' に上がりました')},party?2600:400);
 }
 
@@ -620,11 +654,12 @@ const swatches=sel=>`<div class="swatches">${THEME_KEYS.map(k=>`<button type="bu
 
 /* ---------- views ---------- */
 let tab='home';
-const views={home:viewHome,goals:viewGoals,habits:viewHabits,rewards:viewRewards};
+const views={home:viewHome,goals:viewGoals,record:viewRecord,rewards:viewRewards};
+let editMode=false;
 const COIN='<svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--gold)"/><circle cx="12" cy="12" r="5.5" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="2"/></svg>';
 const SNOW=(c,s)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/></svg>`;
 const DUO_DEFS='<defs><linearGradient id="duoG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--calm)"/><stop offset=".5" stop-color="var(--violet)"/><stop offset="1" stop-color="var(--alert)"/></linearGradient></defs>';
-const head=(en,ja,side='')=>`<div class="panel-head"><div><p class="eyebrow">${en}</p><h2>${ja}</h2></div><span class="spacer"></span>${side}</div>`;
+const head=(en,ja,side='')=>`<div class="panel-head"><h2>${ja}</h2><span class="spacer"></span>${side}</div>`;
 
 function render(){
   const app=$('#app'), nav=document.querySelector('nav.tabs'), bar=$('#bar'), hero=$('#hero');
@@ -647,25 +682,23 @@ function countdown(){const c=cp();if(!c.deadline)return '';
 function pagerHTML(){
   const n=S.compasses.length;
   return `<div class="pager">${S.compasses.map((c,i)=>`<button class="pg ${i===S.cur?'on':''}" data-act="goCompass" data-i="${i}" aria-label="指針 ${i+1}：${esc(c.text)}"></button>`).join('')}
-  ${n<MAX_COMPASS?`<button class="pg-add" data-act="addCompass" aria-label="指針を追加">＋ 指針</button>`:''}${n>1?'<span class="pg-hint">← スワイプで切り替え →</span>':''}</div>`;
+  ${n<MAX_COMPASS?`<button class="pg-add" data-act="addCompass" aria-label="指針を追加">＋ 指針</button>`:''}</div>`;
 }
 function heroHTML(){
   if(tab!=='home'){
-    const m={goals:['Milestones','中間目標',`「${esc(cp().text)}」に近づくための、期限のある中間目標。最大${MAX_GOALS}つまで。`],
-      habits:['Daily','一歩と前進',`5分以内の「はじめの一歩」で動き出し、毎日の前進を積み上げる。前進を1日 <b class="num">${S.dailyCount}</b> 個で達成です。`],
-      rewards:['Rewards','ごほうび','続けた分だけコインがたまり、自分へのごほうびと交換できます。']}[tab];
-    return `${tab!=='rewards'?pagerHTML():''}<p class="eyebrow">${m[0]}</p><h1 class="hero-t">${m[1]}</h1><p class="hero-p">${m[2]}</p>`;
+    const m={goals:'中間目標',record:'記録',rewards:'ごほうび'}[tab];
+    return `${tab==='goals'?pagerHTML():''}<h1 class="hero-t">${m}</h1>${tab==='goals'?`<p class="hero-sub">${esc(cp().text)}</p>`:''}`;
   }
   const t=todayKey(), ds=dayStats(t), st=streak(), lit=kept(t), done=achieved(t);
   const pct=Math.min(1,ds.hb/S.dailyCount), C=2*Math.PI*14, li=levelInfo(S.xp);
-  return `${pagerHTML()}<div class="hero-meta"><p class="eyebrow num">Compass 0${S.cur+1}</p>${countdown()}</div>
+  return `${pagerHTML()}<div class="hero-meta">${countdown()}</div>
   <button class="compass" data-act="editCompass" aria-label="指針を編集"><h1 class="duo">${esc(cp().text)}</h1>
     ${cp().why?`<p class="why">${esc(cp().why)}</p>`:''}</button>
-  ${st&&missedYesterday()?'<p class="hero-warn">昨日はお休みでした。今日ひとつでもやれば、連続記録が続きます。</p>':''}
+  ${st&&missedYesterday()?'<p class="hero-warn">今日ひとつやれば、連続記録が続きます</p>':''}
   <div class="srow">
     <div class="sr-item"><svg class="flame ${lit?'lit':''}" viewBox="0 0 30 34"><path class="o" d="M15 1c2 6 9 9 9 19a9 9 0 01-18 0c0-5 3-7 4-11 1 3 2 4 3 4 0-5 0-8 2-12z"/><path class="i" d="M15 17c1 3 4 4 4 8a4 4 0 01-8 0c0-2 1-3 2-5 .5 1 1 1.5 1.5 1.5 0-2 0-3 .5-4.5z"/></svg><span><b data-count="${st}">${st}</b><small>日連続</small></span></div>
-    <div class="sr-item"><svg class="ring mini" viewBox="0 0 36 36">${DUO_DEFS}<circle class="bgc" cx="18" cy="18" r="14" fill="none" stroke-width="5"/><circle class="fgc" cx="18" cy="18" r="14" fill="none" stroke="url(#duoG)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="--c:${C}" transform="rotate(-90 18 18)" ${pct?'':'opacity="0"'}/></svg><span><b class="num">${ds.hb}<span style="font-size:15px;opacity:.6">/${S.dailyCount}</span></b><small>${done?'今日は達成':'今日の前進'}</small></span></div>
-    <div class="sr-item"><span class="sr-lv"><b data-count="${li.lv}">${li.lv}</b><span class="lvbar"><i style="width:${li.cur/li.need*100}%"></i></span></span><small>レベル<br>あと${li.need-li.cur}XP</small></div>
+    <div class="sr-item"><svg class="ring mini" viewBox="0 0 36 36">${DUO_DEFS}<circle class="bgc" cx="18" cy="18" r="14" fill="none" stroke-width="5"/><circle class="fgc" cx="18" cy="18" r="14" fill="none" stroke="url(#duoG)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="--c:${C}" transform="rotate(-90 18 18)" ${pct?'':'opacity="0"'}/></svg><span><b class="num">${ds.hb}<span style="font-size:15px;opacity:.6">/${S.dailyCount}</span></b><small>${done?'達成！':'今日の前進'}</small></span></div>
+    <div class="sr-item"><span class="sr-lv"><b data-count="${li.lv}">${li.lv}</b><span class="lvbar"><i style="width:${li.cur/li.need*100}%"></i></span></span><small>レベル</small></div>
   </div>`;
 }
 let viewDay=null; // null = today; otherwise yesterday's key while back-filling
@@ -679,37 +712,51 @@ function habitsGrouped(list,render){
 function backupBanner(){
   const now=Date.now(), base=S.lastBackup||new Date((S.since||todayKey())+'T00:00').getTime(), days=Math.floor((now-base)/864e5);
   if(days<7||(S.backupSnooze&&now<S.backupSnooze))return '';
-  return `<div class="banner"><p>${S.lastBackup?`最後のバックアップから${days}日たちました。`:'記録はこの端末の中だけにあります。'}バックアップを保存しておきましょう。</p><button class="btn primary" style="flex:none" data-act="exportBackup">保存する</button><button class="btn" data-act="snoozeBackup">あとで</button></div>`;
+  return `<div class="banner"><p><b>バックアップ</b>　${S.lastBackup?`${days}日前`:'まだ'}</p><button class="btn primary" style="flex:none" data-act="exportBackup">保存</button><button class="btn" data-act="snoozeBackup">あとで</button></div>`;
 }
 function viewHome(){
-  const k=dk(), y=!!viewDay;
-  const starters=cp().starters.map(x=>starterItem(x,k)).join('')||`<div class="empty">数秒〜5分で終わる行動を登録しましょう。<a class="link" href="#habits">はじめの一歩を追加</a></div>`;
-  const habits=cp().habits.length?habitsGrouped(cp().habits,h=>habitItem(h,k)):`<div class="empty">毎日の前進がまだありません。<a class="link" href="#habits">追加する</a></div>`;
+  const k=dk(), y=!!viewDay, c=cp(), rows=[];
+  if(!y&&S.mit.for===todayKey()&&S.mit.title)rows.push(row({act:'mitDone',edit:'clearMit',id:'mit',done:!!S.mit.done,title:S.mit.title,tag:'最重要',tc:'km'}));
+  c.starters.forEach(x=>rows.push(row({act:'toggleStarter',edit:'editStarter',id:x.id,done:!!x.log[k],title:x.title,tag:'一歩',tc:'k1'})));
+  const order=['morning','day','night','any'];
+  [...c.habits].sort((a,b)=>order.indexOf(a.slot||'any')-order.indexOf(b.slot||'any')).forEach(h=>{
+    const st=habitStreak(h), sub=[h.cue?esc(h.cue)+' →':'',h.freq<7?`今週 ${weekCount(h)}/${h.freq}`:(st>1?`${st}日連続`:'')].filter(Boolean).join('　');
+    rows.push(row({act:'toggleHabit',edit:'editHabit',id:h.id,done:!!h.log[k],title:h.title,tag:h.slot&&h.slot!=='any'?slotName(h.slot):'',sub}));});
+  const total=rows.length, done=rows.filter(r=>r.includes('aria-pressed="true"')).length;
   const yd=key(addDays(new Date(),-1)), [, ym, ydd]=yd.split('-').map(Number);
-  return `${y?`<div class="banner yday"><p><b>昨日（${ym}/${ydd}）</b>の記録をつけています。</p><button class="btn" data-act="toToday">今日に戻る</button></div>`:reviewBanner()+backupBanner()}
-  ${y?'':mitTodayHTML()}
-  ${y?'':milestonesHTML()}
+  return `${y?'':reviewBanner()+backupBanner()}
   ${y?'':moodHTML()}
-  <section class="panel">${head('First step · 5 min',"はじめの一歩",'<a class="link" href="#habits">編集</a>')}<div class="list ink">${starters}</div></section>
-  ${y?'':focusCTA()}
-  <section class="panel">${head('Progress',y?"昨日の前進":"今日の前進",`<span class="side num">${dayStats(k).hb} / ${S.dailyCount}</span>`)}<div class="list">${habits}</div>
-  ${y?'':'<button class="subtle" data-act="toYesterday">昨日の分をつけ忘れたときは、こちら</button>'}</section>
-  ${y?'':foundationHTML()}
-  ${y?'':eveningHTML()}
-  ${y?'':heatHTML()}
-  ${y?'':insightHTML()}`;
+  <section class="panel ${editMode?'edit-on':''}"><div class="today-h"><h2>${y?`昨日（${ym}/${ydd}）`:'今日やること'}</h2><span class="num">${done}/${total}</span><button class="link" data-act="toggleEdit">${editMode?'完了':'編集'}</button></div>
+  <div class="pbar"><i style="width:${total?done/total*100:0}%"></i></div>
+  <div class="list">${rows.join('')||'<div class="empty">「編集」から追加</div>'}</div>
+  ${editMode?`<div class="addrow"><button class="add" data-act="addStarter">＋ 一歩</button><button class="add" data-act="addHabit">＋ 前進</button></div>`:''}
+  ${y?'<button class="subtle c" data-act="toToday">今日に戻る</button>':(editMode?'':'<button class="subtle c" data-act="toYesterday">昨日の分をつける</button>')}</section>
+  ${y?'':quickRow()}
+  ${y?'':milestonesHTML()}`;
+}
+function row(o){
+  const act=editMode?o.edit:o.act;
+  return `<div class="item tap ${o.done?'done':''}" data-act="${act}" data-id="${o.id}" role="button" tabindex="0" aria-pressed="${!!o.done}" aria-label="${esc(o.title)}"><span class="check">${CHECK}</span><span class="t"><span>${o.tag?`<span class="tg ${o.tc||''}">${o.tag}</span>`:''}${esc(o.title)}</span>${o.sub?`<span class="sub">${o.sub}</span>`:''}</span>${editMode?`<span class="more" aria-hidden="true">${DOTS}</span>`:''}</div>`;
+}
+function quickRow(){const P=S.pomo, ev=isEvening(), nightKey=new Date().getHours()<3?key(addDays(new Date(),-1)):todayKey(), forKey=key(addDays(new Date(nightKey+'T12:00'),1)), set=S.mit.for===forKey&&S.mit.title;
+  return `<div class="quick"><button class="qbtn" data-act="${S.mit.for===todayKey()&&S.mit.title&&!S.mit.done?'mitFocus':'openPomo'}"><span class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span>${P.running||P.left?`<b class="num" data-pomo-time>${fmt(pomoRemain())}</b>`:`${P.work}分 集中`}<small>今日 ${pomoToday().n}回</small></span></button>
+  ${ev?`<button class="qbtn dark" data-act="openTonight"><span class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg></span><span>明日の準備<small>${set?'決めた ✓':'最重要を1つ決める'}</small></span></button>`:''}</div>`;
+}
+function viewRecord(){
+  return `${heatHTML()}
+  <button class="qbtn" data-act="openReview"><span class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12a8 8 0 108-8M4 4v4h4"/></svg></span><span>週の振り返り<small>${S.lastReview?`前回 ${S.lastReview.slice(5).replace('-','/')}`:'3分・+30 XP'}</small></span></button>
+  ${foundationHTML()}
+  ${insightHTML()}`;
 }
 const jpDate=k=>{const [y,m,d]=k.split('-').map(Number);return `${y}年${m}月${d}日`;};
 const daysLeft=k=>Math.ceil((new Date(k+'T00:00')-new Date(todayKey()+'T00:00'))/864e5);
 function milestonesHTML(){
-  const gs=cp().goals;
-  const rows=gs.map((g,i)=>{const n=g.tasks.length,dn=g.tasks.filter(t=>t.done).length,p=n?dn/n:0,done=isNum(g)?goalDone(g):n&&dn===n;
-    let due='<span class="ms-due">期限なし</span>';
-    if(g.due){const L=daysLeft(g.due);due=`<span class="ms-due">${jpDate(g.due)}まで</span><span class="ms-left ${L<0&&!done?'over':L<=7&&!done?'soon':''}">${done?'達成':L<0?`${-L}日超過`:L===0?'今日まで':`あと${L}日`}</span>`;}
-    const val=isNum(g)?`<span class="ms-val">${fmtNum(g.cur)} / ${fmtNum(g.target)}${esc(g.unit)}</span>`:'';
-    return `<a class="ms compact ${done||goalDone(g)?'done':''}" href="#goals"><span class="ms-n num">0${i+1}</span><span class="ms-b"><span class="ms-t">${esc(g.title)}</span>${val}<span class="ms-m">${due}</span></span></a>`;}).join('');
-  return `<section class="panel">${head('Milestones','中間目標','<a class="link" href="#goals">編集</a>')}
-  ${gs.length?`<div class="list">${rows}</div>`:`<div class="list"><div class="empty">期限つきの中間目標を設定しましょう。例：EC月商10万円 2026年12月31日まで　<a class="link" href="#goals">中間目標を追加</a></div></div>`}</section>`;
+  const gs=cp().goals;if(!gs.length)return `<a class="add" href="#goals" style="text-decoration:none">＋ 中間目標</a>`;
+  const rows=gs.map((g,i)=>{const n=g.tasks.length,dn=g.tasks.filter(t=>t.done).length,done=isNum(g)?goalDone(g):n&&dn===n;
+    let left='';if(g.due){const L=daysLeft(g.due);left=`<span class="ms-left ${L<0&&!done?'over':L<=7&&!done?'soon':''}">${done?'達成':L<0?`${-L}日超過`:L===0?'今日まで':`あと${L}日`}</span>`;}
+    const val=isNum(g)?`<span class="ms-val">${fmtNum(g.cur)}/${fmtNum(g.target)}${esc(g.unit)}</span>`:(n?`<span class="ms-val">${dn}/${n}</span>`:'');
+    return `<a class="ms compact ${done?'done':''}" href="#goals"><span class="ms-b"><span class="ms-t">${esc(g.title)}</span><span class="ms-r">${val}${left}</span></span></a>`;}).join('');
+  return `<section class="panel">${head('','中間目標')}<div class="list">${rows}</div></section>`;
 }
 function focusCTA(){const P=S.pomo,today=pomoToday();
   return `<button class="focus-cta" data-act="openPomo"><span class="fc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span>
@@ -737,7 +784,7 @@ function heatHTML(){
   for(let i=0;i<7;i++){const k=key(addDays(weekStart(),i)),x=S.days[k]||{};
     const cls=achieved(k)?'ok':x.frozen?'frz':kept(k)?'kp':'';
     week+=`<div><span>${wk[i]}</span><div class="dot ${cls} ${k===t?'now':''}">${cls==='ok'?CHECK:cls==='frz'?SNOW('#fff',13):''}</div></div>`;}
-  return `<section class="panel">${head('Record','記録',`<span class="side num">通算 ${totalDays()}日</span>`)}<div class="heat">
+  return `<section class="panel">${head('','この6週間',`<span class="side num">通算 ${totalDays()}日</span>`)}<div class="heat">
   <div class="week lt">${week}</div>
   <div class="cells">${cells}</div>
   <div class="legend"><span><i style="background:color-mix(in srgb,var(--calm) 45%,var(--soft))"></i>一歩だけ</span><span><i style="background:var(--violet)"></i>達成</span><span><i style="background:var(--alert)"></i>大きく達成</span><span><i style="background:color-mix(in srgb,var(--ice) 25%,var(--soft));outline:1.5px solid var(--ice);outline-offset:-1.5px"></i>フリーズ</span></div></div></section>`;
@@ -747,19 +794,16 @@ function viewGoals(){
   const g=c.goals.map((goal,gi)=>{const n=goal.tasks.length,dn=goal.tasks.filter(t=>t.done).length,num=isNum(goal);
     const p=num?goalPct(goal):(n?dn/n:0), comp=num?goalDone(goal):(n&&dn===n);
     const due=goal.due?`<span class="tag">${jpDate(goal.due)}まで${daysLeft(goal.due)>=0?`（あと${daysLeft(goal.due)}日）`:''}</span>`:'<span class="tag">期限なし</span>';
-    return `<article class="goal ${comp?'complete':''}"><div class="goal-h"><div class="row"><p class="eyebrow num">Milestone 0${gi+1}</p><span class="spacer"></span><button class="more" data-act="editGoal" data-id="${goal.id}" aria-label="中間目標を編集">${DOTS}</button></div>
+    return `<article class="goal ${comp?'complete':''}"><div class="goal-h"><div class="row"><span class="spacer"></span><button class="more" data-act="editGoal" data-id="${goal.id}" aria-label="中間目標を編集">${DOTS}</button></div>
       <h3>${esc(goal.title)}</h3>
-      ${num?`<div class="row"><span class="ms-val" style="font-size:22px">${fmtNum(goal.cur)}<span style="font-size:13px;opacity:.6"> / ${fmtNum(goal.target)}${esc(goal.unit)}</span></span><span class="spacer"></span><button class="link" data-act="updateGoalVal" data-id="${goal.id}">現在値を更新</button></div>`:''}
+      ${num?`<div class="row"><span class="ms-val" style="font-size:22px">${fmtNum(goal.cur)}<span style="font-size:13px;opacity:.6"> / ${fmtNum(goal.target)}${esc(goal.unit)}</span></span><span class="spacer"></span><button class="link" data-act="updateGoalVal" data-id="${goal.id}">更新</button></div>`:''}
       <div class="row">${due}<span class="spacer"></span><span class="tag num">${num?Math.round(p*100)+'%':`${dn} / ${n} タスク`}</span></div><div class="bar"><i style="width:${p*100}%"></i></div>
       ${num?goalChart(goal):''}</div>
       ${goal.tasks.map(t=>`<div class="item ${t.done?'done':''}"><button class="check" data-act="toggleTask" data-g="${goal.id}" data-id="${t.id}" aria-label="${esc(t.title)}を${t.done?'未完了に戻す':'完了にする'}">${CHECK}</button><span class="t"><span>${esc(t.title)}</span></span><span class="xp">+${XP.task}</span><button class="more" data-act="editTask" data-g="${goal.id}" data-id="${t.id}" aria-label="タスクを編集">${DOTS}</button></div>`).join('')}
-      <div class="item"><button class="add-task" data-act="addTask" data-g="${goal.id}">＋ タスクを追加</button></div></article>`;}).join('');
-  return `<section class="panel">${head('If-then plan','もしもの計画','<button class="link" data-act="editPlan">編集</button>')}
-  ${c.obstacle||c.plan?`<div class="plan"><p class="if">障害になりそうなこと：${esc(c.obstacle||'—')}</p><p class="then">そのときは → ${esc(c.plan||'—')}</p></div>`:`<div class="banner"><p>理想を思い描くだけだと、かえって努力が減ることがあります。つまずきそうなことと、そのときの行動を先に決めておきましょう。</p><button class="btn primary" style="flex:none" data-act="editPlan">決める</button></div>`}</section>
-  <section class="panel">${head('Milestones','中間目標と、そのタスク',`<span class="side num">${c.goals.length} / ${MAX_GOALS}</span>`)}
-  <p class="lead">数値の目標（例：月商10万円）は、目標値と単位を入れると進み具合をグラフで追えます。タスクを片づけると <b class="num">${XP.task} XP</b>、中間目標を達成するとさらに <b class="num">${XP.goal} XP</b>。</p>
-  ${g||'<div class="list"><div class="empty">まだ中間目標がありません。</div></div>'}
-  ${c.goals.length<MAX_GOALS?`<button class="add" data-act="addGoal">＋ 中間目標を追加（あと${MAX_GOALS-c.goals.length}個）</button>`:`<p class="note">中間目標は最大${MAX_GOALS}個までです。達成した目標や不要な目標を「…」から削除すると、新しく追加できます。</p>`}</section>`;
+      <div class="item"><button class="add-task" data-act="addTask" data-g="${goal.id}">＋ タスク</button></div></article>`;}).join('');
+  return `${g}
+  ${c.goals.length<MAX_GOALS?`<button class="add" data-act="addGoal">＋ 中間目標</button>`:''}
+  <button class="plan" data-act="editPlan" style="text-align:left;border:0">${c.obstacle||c.plan?`<p class="if">つまずいたら：${esc(c.obstacle||'—')}</p><p class="then">→ ${esc(c.plan||'—')}</p>`:'<p class="then">＋ つまずいたときの行動を決める</p>'}</button>`;
 }
 function viewHabits(){
   const t=todayKey(), sug=suggestions().filter(s=>!cp().habits.some(h=>h.title===s));
@@ -778,30 +822,28 @@ function viewHabits(){
 let step=0, draft=null;
 function initDraft(){const used=S.compasses.map(c=>c.theme);draft={text:'',why:'',deadline:'',theme:THEME_KEYS.find(k=>!used.includes(k))||'ember',goals:['','',''],habits:new Set(),extra:[],starters:new Set(),sextra:[]};}
 function readSetup(){if(!draft)return;
-  if(step===0){draft.text=v('s1');draft.why=v('s2');draft.deadline=v('s3');}
+  if(step===0){draft.text=v('s1');if($('#s2'))draft.why=v('s2');if($('#s3'))draft.deadline=v('s3');}
   if(step===1){draft.goals=[0,1,2].map(i=>v('sg'+i));draft.gdue=[0,1,2].map(i=>v('sd'+i));}}
 function viewSetup(){
   if(!draft)initDraft();
-  const dots=[0,1,2,3].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('');
+  const dots=[0,1,2].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('');
   let body='';
   const nth=S.compasses.length;
-  if(step===0) body=`<p class="eyebrow num">Step 01 — Compass ${nth?'0'+(nth+1):''}</p><h1 class="setup-h">${nth?`${nth+1}つ目の<span class="duo">指針</span>は？`:'あなたの<span class="duo">指針</span>は？'}</h1><p class="setup-p">中長期で目指すことを、ひと言で。<br>毎日いちばん大きく表示されます。</p>
-    ${fld('s1','ひと言の指針',draft.text,'text','例：月50万円を稼ぐ／ボクシングでワンツーを上達させる')}${fld('s2','なぜそれをやるのか（任意）',draft.why,'textarea')}${fld('s3','期限（任意）',draft.deadline,'date')}<div class="field"><label>テーマカラー</label>${swatches(draft.theme)}<span class="hint">この指針の画面の色になります。あとで変えられます。</span></div>`;
-  if(step===1) body=`<p class="eyebrow num">Step 02 — Goals</p><h1 class="setup-h">指針を、<br><span class="duo">中間目標</span>に。</h1><p class="setup-p">「${esc(draft.text)}」に近づくための目標を、最大${MAX_GOALS}個まで。空欄のままでも、あとで追加できます。</p>
-    ${[0,1,2].map(i=>`<div class="field"><label for="sg${i}">中間目標 0${i+1}</label><div class="goal-in"><input id="sg${i}" value="${esc(draft.goals[i]||'')}" placeholder="${['例：EC月商10万円','例：継続顧客を3社つくる','例：実績ページを公開する'][i]}"><input id="sd${i}" type="date" value="${esc((draft.gdue||[])[i]||'')}" aria-label="目標 0${i+1} の期限（任意）"></div></div>`).join('')}
-    <p class="hint" style="margin:0;font-size:12px">日付は期限（任意）。タスクは目標タブで追加できます。</p>`;
-  if(step===2){const sug=[...new Set([...starterSuggestionsFor(draft.text),...draft.sextra])];
-    body=`<p class="eyebrow num">Step 03 — First step</p><h1 class="setup-h"><span class="duo">はじめの一歩</span>を<br>決める。</h1><p class="setup-p">数秒〜5分で終わる、行動の入口。<br>「PCを開く」くらい小さくていい。最大${MAX_STARTERS}つまで。</p>
-    <div class="sugg">${sug.map(t=>`<button type="button" data-act="pickStarter" data-t="${esc(t)}" aria-pressed="${draft.starters.has(t)}" class="${draft.starters.has(t)?'on':''}">${draft.starters.has(t)?'✓ ':'＋ '}${esc(t)}</button>`).join('')}</div>
-    <div class="field"><label for="ss">自分で追加</label><div class="row"><input id="ss" placeholder="例：ノートを開く" style="flex:1"><button type="button" class="btn" data-act="addOwnStarter">追加</button></div></div>
-    <p class="setup-p num">選択中：${draft.starters.size} / ${MAX_STARTERS}</p>`;}
-  if(step===3){const sug=[...new Set([...suggestionsFor(draft.text),...draft.extra])];
-    body=`<p class="eyebrow num">Step 04 — Progress</p><h1 class="setup-h">毎日の<span class="duo">前進</span>を選ぶ。</h1><p class="setup-p">毎日チェックするものを選んでください。小さいほど続きます。<br>やるタイミング（「〇〇したら」）は、あとで習慣タブから決められます。</p>
-    <div class="sugg">${sug.map(t=>`<button type="button" data-act="pickHabit" data-t="${esc(t)}" aria-pressed="${draft.habits.has(t)}" class="${draft.habits.has(t)?'on':''}">${draft.habits.has(t)?'✓ ':'＋ '}${esc(t)}${evTag(t)}</button>`).join('')}</div>${EV_NOTE}
-    <div class="field"><label for="sh">自分で追加</label><div class="row"><input id="sh" placeholder="例：朝5分ストレッチ" style="flex:1"><button type="button" class="btn" data-act="addOwnHabit">追加</button></div></div>
-    <p class="setup-p num">選択中：${draft.habits.size}個</p>`;}
+  if(step===0) body=`<h1 class="setup-h">${nth?`${nth+1}つ目の<span class="duo">指針</span>は？`:'あなたの<span class="duo">指針</span>は？'}</h1><p class="setup-p">目指すことを、ひと言で。</p>
+    <div class="field"><input id="s1" value="${esc(draft.text)}" placeholder="例：月50万円を稼ぐ" aria-label="指針"></div>
+    ${swatches(draft.theme)}
+    <details class="adv"><summary>理由・期限（任意）</summary>${fld('s2','なぜやるのか',draft.why,'textarea')}${fld('s3','期限',draft.deadline,'date')}</details>`;
+  if(step===1) body=`<h1 class="setup-h"><span class="duo">中間目標</span>は？</h1><p class="setup-p">期限つきで、3つまで。あとでもOK。</p>
+    ${[0,1,2].map(i=>`<div class="goal-in"><input id="sg${i}" value="${esc(draft.goals[i]||'')}" placeholder="${['例：EC月商10万円','例：継続顧客を3社','例：実績ページ公開'][i]}" aria-label="中間目標 ${i+1}"><input id="sd${i}" type="date" value="${esc((draft.gdue||[])[i]||'')}" aria-label="期限 ${i+1}"></div>`).join('')}`;
+  if(step===2){const ss=[...new Set([...starterSuggestionsFor(draft.text),...draft.sextra])].slice(0,8), hs=[...new Set([...suggestionsFor(draft.text),...draft.extra])];
+    body=`<h1 class="setup-h">毎日<span class="duo">やること</span></h1><p class="setup-p">タップで選ぶ。小さいほど続きます。</p>
+    <p class="eyebrow" style="margin-top:4px">はじめの一歩（5分以内）${draft.starters.size}/${MAX_STARTERS}</p>
+    <div class="sugg">${ss.map(t=>`<button type="button" data-act="pickStarter" data-t="${esc(t)}" aria-pressed="${draft.starters.has(t)}" class="${draft.starters.has(t)?'on':''}">${esc(t)}</button>`).join('')}</div>
+    <p class="eyebrow" style="margin-top:8px">前進 ${draft.habits.size}</p>
+    <div class="sugg">${hs.map(t=>`<button type="button" data-act="pickHabit" data-t="${esc(t)}" aria-pressed="${draft.habits.has(t)}" class="${draft.habits.has(t)?'on':''}">${esc(t)}${evTag(t)}</button>`).join('')}</div>
+    <div class="row"><input id="sh" placeholder="自分で書いて追加" style="flex:1;font:inherit;font-size:16px;padding:12px 14px;border-radius:14px;border:1px solid var(--ink-line);background:var(--ink-card);color:var(--ink-fg)" aria-label="前進を自分で追加"><button type="button" class="btn" data-act="addOwnHabit">追加</button></div>`;}
   return `<div class="setup-wrap"><div class="col"><div class="steps">${dots}</div>${body}
-  <div class="btns">${step?'<button type="button" class="btn" data-act="setupBack">戻る</button>':(adding?'<button type="button" class="btn" data-act="cancelAdd">やめる</button>':'')}<button type="button" class="btn primary" data-act="setupNext">${step===3?'はじめる':'次へ'}</button></div></div></div>`;
+  <div class="btns">${step?'<button type="button" class="btn" data-act="setupBack">戻る</button>':(adding?'<button type="button" class="btn" data-act="cancelAdd">やめる</button>':'')}<button type="button" class="btn primary" data-act="setupNext">${step===2?'はじめる':'次へ'}</button></div></div></div>`;
 }
 function finishSetup(){
   const c={id:uid(),text:draft.text,why:draft.why,deadline:draft.deadline,theme:draft.theme,goals:[],habits:[],starters:[]};
@@ -811,22 +853,22 @@ function finishSetup(){
   S.compasses.push(c); S.cur=S.compasses.length-1;
   S.setup=true;adding=false;draft=null;step=0;tab='home';save();
   if(location.hash!=='#home')history.replaceState(null,'','#home');
-  render();scrollTo(0,0);sfx('launch');playIntro();toast('まずは「はじめの一歩」から');
+  render();scrollTo(0,0);sfx('launch');playIntro();
 }
 function viewRewards(){
   const st=streak();
   const badges=STREAK_BADGES.map(b=>`<div class="badge ${S.badges['s'+b]?'got':''}"><div class="b">${b}</div>${b}日連続</div>`).join('');
   const tbadges=TOTAL_BADGES.map(b=>`<div class="badge ${S.badges['t'+b]?'got':''}"><div class="b">${b}</div>通算${b}日</div>`).join('');
   return `<div class="wallet"><div><p class="eyebrow" style="color:var(--ink-muted)">Coins</p><div class="big">${S.coins}</div></div><span class="spacer"></span>
-    <div class="rules">5 XPごとに 1枚<br>1日の目標達成で +${DAY_BONUS}<br>バッジで +日数分</div></div>
-  <section class="panel">${head('Treat yourself','自分へのごほうび')}
+</div>
+  <section class="panel">${head('','ごほうび')}
   <div class="list">${S.rewards.map(r=>`<div class="item"><span class="t"><span>${esc(r.title)}</span><span class="sub num">${r.cost} コイン${r.freeze?' · フリーズ付き':''}</span></span><button class="buy" data-act="redeem" data-id="${r.id}" ${S.coins<r.cost?'disabled':''}>交換する</button><button class="more" data-act="editReward" data-id="${r.id}" aria-label="ごほうびを編集">${DOTS}</button></div>`).join('')||'<div class="empty">ごほうびを登録しましょう。</div>'}</div>
-  <button class="add" data-act="addReward">＋ ごほうびを追加</button></section>
-  <section class="panel">${head('Streak freeze','ストリークフリーズ',`<span class="side num">所持 ${S.freezes}個</span>`)}
-  <div class="list"><div class="item">${SNOW('var(--ice)',26)}<span class="t"><span>2日以上休んでも、連続記録を守ります</span><span class="sub">1日のお休みはフリーズなしでも大丈夫。2日目から自動で使います</span></span><button class="buy" data-act="buyFreeze" ${S.coins<FREEZE_COST?'disabled':''}>${FREEZE_COST} コイン</button></div></div></section>
-  <section class="panel">${head('Badges','連続記録のバッジ',`<span class="side num">いま ${st}日連続</span>`)}<div class="badges">${badges}</div></section>
-  <section class="panel">${head('Total','通算記録のバッジ',`<span class="side num">通算 ${totalDays()}日</span>`)}<p class="lead">途切れても消えない記録です。66日は、習慣が身につくまでの目安（中央値）です。</p><div class="badges">${tbadges}</div></section>
-  ${S.redeemed.length?`<section class="panel">${head('History','交換した記録')}<div class="list">${S.redeemed.slice(-5).reverse().map(r=>`<div class="item"><span class="t"><span>${esc(r.title)}</span><span class="sub num">${r.at.replace(/-/g,'.')}</span></span></div>`).join('')}</div></section>`:''}`;
+  <button class="add" data-act="addReward">＋ ごほうび</button></section>
+  <section class="panel">
+  <div class="list"><div class="item">${SNOW('var(--ice)',26)}<span class="t"><span>ストリークフリーズ</span><span class="sub">休んでも連続記録を守る · ${S.freezes}個</span></span><button class="buy" data-act="buyFreeze" ${S.coins<FREEZE_COST?'disabled':''}>${FREEZE_COST} コイン</button></div></div></section>
+  <section class="panel">${head('','連続のバッジ')}<div class="badges">${badges}</div></section>
+  <section class="panel">${head('','通算のバッジ')}<div class="badges">${tbadges}</div></section>
+  ${S.redeemed.length?`<section class="panel">${head('','交換した記録')}<div class="list">${S.redeemed.slice(-5).reverse().map(r=>`<div class="item"><span class="t"><span>${esc(r.title)}</span><span class="sub num">${r.at.replace(/-/g,'.')}</span></span></div>`).join('')}</div></section>`:''}`;
 }
 
 /* ---------- numeric milestones ---------- */
@@ -834,10 +876,10 @@ const isNum=g=>g&&g.target>0;
 const fmtNum=v=>{v=+v||0;const a=Math.abs(v);if(a>=1e8)return +(v/1e8).toFixed(2)+'億';if(a>=1e4)return +(v/1e4).toFixed(1)+'万';return +v.toFixed(2)+'';};
 const goalPct=g=>Math.max(0,Math.min(1,((+g.cur||0)-(+g.base||0))/((+g.target)-(+g.base||0)||1)));
 const goalDone=g=>isNum(g)&&(+g.cur||0)>=+g.target;
-const numFields=g=>`<details class="adv" ${isNum(g)?'open':''}><summary>数値で追う（任意）</summary>
+const numFields=g=>`<details class="adv" ${isNum(g)?'open':''}><summary>数字で追う（グラフ）</summary>
   <div class="inl" style="margin-top:8px"><input id="gT" type="number" inputmode="decimal" placeholder="目標値 例：100000" value="${g.target||''}" aria-label="目標値"><input id="gU" placeholder="単位 例：円" value="${esc(g.unit||'')}" style="max-width:110px" aria-label="単位"></div>
   <div class="inl" style="margin-top:8px"><input id="gB" type="number" inputmode="decimal" placeholder="スタート値 例：0" value="${g.base??''}" aria-label="スタート値"><input id="gC" type="number" inputmode="decimal" placeholder="現在値" value="${g.cur??''}" aria-label="現在値"></div>
-  <span class="hint">目標値を入れると、期限までの線と実績を並べたグラフが出ます。</span></details>`;
+</details>`;
 function readNum(g){const T=parseFloat(v('gT'));if(!(T>0)){delete g.target;return}
   g.target=T;g.unit=v('gU');g.base=parseFloat(v('gB'))||0;const c=parseFloat(v('gC'));
   if(!isNaN(c)&&c!==g.cur){g.cur=c;setHist(g,c);} if(g.cur===undefined)g.cur=g.base;}
@@ -857,7 +899,7 @@ function goalChart(g){
     <circle cx="${X(last[0])}" cy="${Y(+last[1])}" r="4" fill="var(--alert)"/>
     <text x="${pl}" y="${H-4}">${start.slice(5).replace('-','/')}</text><text x="${W-pr}" y="${H-4}" text-anchor="end">${end.slice(5).replace('-','/')}</text>
     <text x="${W-pr}" y="${Y(+g.target)-4}" text-anchor="end">目標 ${fmtNum(g.target)}${esc(g.unit||'')}</text></svg>
-    <p class="hint" style="margin:0;font-size:11px;color:var(--muted)">点線＝期限までに達成するための線　赤＝実績</p>`;
+`;
 }
 
 /* ---------- foundation: sleep, light, caffeine ---------- */
@@ -866,14 +908,14 @@ const fromMin=m=>{m=((m%1440)+1440)%1440;return pad(Math.floor(m/60))+':'+pad(m%
 function baseTimes(){const b=S.base,w=hm(b.wake),sl=hm(b.sleep);return {wake:b.wake,sleep:b.sleep,caf:fromMin(sl-480),dim:fromMin(sl-90),dur:((w-sl+1440)%1440)/60};}
 const BASE_CHECKS=[['wake','決めた時刻に起きた'],['light','朝、外の光を浴びた'],['caf','カフェインを締め切りまでにした']];
 function foundationHTML(){
-  if(!S.base.set)return `<section class="panel">${head('Foundation','生活の土台')}<div class="banner"><p>睡眠・朝の光・カフェインの時間は、日中の活力にも、テストステロンにも、習慣を続ける力にも効く土台です。起きる時刻と寝る時刻を決めると、カフェインの締め切りなどを自動で出します。</p><button class="btn primary" style="flex:none" data-act="editBase">設定する</button></div></section>`;
+  if(!S.base.set)return `<section class="panel">${head('','生活の土台')}<div class="banner"><p>起きる・寝る時刻を決めると、カフェインの締め切りなどを出します</p><button class="btn primary" style="flex:none" data-act="editBase">設定</button></div></section>`;
   const T=baseTimes(), t=todayKey(), lg=S.baseLog[t]||{}, n=new Date(), nowM=n.getHours()*60+n.getMinutes();
   const rows=[[T.wake,'起きる'],[T.caf,'カフェインはここまで'],[T.dim,'照明と画面を暗く'],[T.sleep,'寝る']];
   const ahead=rows.map(r=>((hm(r[0])-nowM+1440)%1440)); const ni=ahead.indexOf(Math.min(...ahead));
-  return `<section class="panel">${head('Foundation','生活の土台','<button class="link" data-act="editBase">時刻を変更</button>')}
+  return `<section class="panel">${head('','生活の土台','<button class="link" data-act="editBase">変更</button>')}
   <div class="list"><div class="tl">${rows.map((r,i)=>`<div class="${i===ni?'next':''}"><b>${r[0]}</b><small>${r[1]}</small></div>`).join('')}</div>
   ${BASE_CHECKS.map(([k,l])=>`<div class="item ${lg[k]?'done':''}"><button class="check" data-act="toggleBase" data-k="${k}" aria-label="${l}">${CHECK}</button><span class="t"><span>${k==='caf'?`カフェインは${T.caf}まで`:k==='wake'?`${T.wake}に起きた`:l}</span></span><span class="xp">+3</span></div>`).join('')}</div>
-  <p class="hint" style="margin:0;font-size:12px;color:var(--muted)">睡眠 ${T.dur}時間${T.dur<7?'。7時間に届いていません。寝る時刻を早めるのがおすすめです':''}。カフェインは寝る8時間前まで、を目安にしています。</p></section>`;
+  <p class="hint" style="margin:0;font-size:12px;color:var(--muted)">睡眠 ${T.dur}時間${T.dur<7?'（7時間未満）':''}</p></section>`;
 }
 
 /* ---------- evening prep & most important task ---------- */
@@ -903,10 +945,7 @@ function mitTodayHTML(){
 function moodHTML(){
   const h=new Date().getHours(), t=todayKey();
   if(!S.moodOn||h<4||h>=12||S.mood[t])return '';
-  const dflt=S.base.set?baseTimes().dur:7;
-  return `<section class="panel">${head('Morning','今朝の調子は？','<button class="link" data-act="skipMood">今日はとばす</button>')}
-  <div class="mood">${[['1','低い'],['2',''],['3','ふつう'],['4',''],['5','高い']].map(([n,l])=>`<button data-act="moodPick" data-v="${n}"><b>${n}</b>${l||'&nbsp;'}</button>`).join('')}</div>
-  <div class="inl"><label for="moodSl" style="font-size:13px;color:var(--muted);white-space:nowrap">昨夜の睡眠</label><select id="moodSl">${[4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10].map(x=>`<option value="${x}" ${x===Math.round(dflt*2)/2?'selected':''}>${x}時間</option>`).join('')}</select></div></section>`;
+  return `<div class="moodrow"><span>今朝の調子</span><div class="mood">${[1,2,3,4,5].map(n=>`<button data-act="moodPick" data-v="${n}" aria-label="調子 ${n}"><b>${n}</b></button>`).join('')}</div><button class="icon-btn" data-act="skipMood" aria-label="とばす" style="color:var(--muted)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`;
 }
 function insightHTML(){
   const ent=Object.entries(S.mood).filter(([k,m])=>m&&m.sl&&k<todayKey());
@@ -914,15 +953,15 @@ function insightHTML(){
   const a=ent.filter(([,m])=>m.sl>=7), b=ent.filter(([,m])=>m.sl<7);
   if(ent.length<14||a.length<4||b.length<4){
     if(!S.moodOn&&!ent.length)return '';
-    body=`<p class="lead">朝の調子と睡眠を記録すると、自分のデータで「よく眠れた日はどれくらい進むか」が見えてきます。いま ${ent.length}日分（目安は14日分以上、7時間以上と未満がそれぞれ4日以上）。</p>`;
+    body=`<p class="lead">朝の調子があと${Math.max(1,14-ent.length)}日分たまると、睡眠と達成率の関係が出ます</p>`;
   }else{
     const rate=xs=>Math.round(xs.filter(([k])=>achieved(k)).length/xs.length*100), avg=xs=>(xs.reduce((s,[,m])=>s+(+m.e||0),0)/xs.filter(([,m])=>m.e).length||0).toFixed(1);
     body=`<div class="list"><div class="item"><span class="t"><span>7時間以上眠った日（${a.length}日）</span><span class="sub">前進の達成率 ${rate(a)}% · 朝の調子 平均${avg(a)}</span></span></div>
     <div class="item"><span class="t"><span>7時間未満の日（${b.length}日）</span><span class="sub">前進の達成率 ${rate(b)}% · 朝の調子 平均${avg(b)}</span></span></div></div>
-    <p class="hint" style="margin:0;font-size:12px;color:var(--muted)">あなたの記録から出した数字です。関係があることは示しますが、睡眠が原因だとまでは言えません。</p>`;
+    <p class="hint" style="margin:0;font-size:12px;color:var(--muted)">※関係を示す数字で、原因とは限りません</p>`;
   }
   const body2=S.bodyOn&&S.body.length>=2?bodyChart():'';
-  return `<section class="panel">${head('Insight','あなたのデータ')}${body}${body2}</section>`;
+  return `<section class="panel">${head('','あなたのデータ')}${body}${body2}</section>`;
 }
 function bodyChart(){
   const pts=S.body.filter(r=>r[1]>0).slice(-12);if(pts.length<2)return '';
@@ -940,7 +979,7 @@ const daysBetween=(a,b)=>Math.round((new Date(b+'T00:00')-new Date(a+'T00:00'))/
 function reviewDue(){if(!S.setup)return false;const t=todayKey();if(S.lastReview===t)return false;
   if(daysBetween(S.since||t,t)<6)return false;const last=S.lastReview?daysBetween(S.lastReview,t):99;
   return (new Date().getDay()===0&&last>=3)||last>=8;}
-function reviewBanner(){return reviewDue()?`<div class="banner yday"><p><b>今週の振り返り</b>（3分）。できたこと・障害・きっかけを見直すと、来週が進みやすくなります。+30 XP</p><button class="btn" style="background:var(--primary);color:#fff" data-act="openReview">はじめる</button></div>`:'';}
+function reviewBanner(){return reviewDue()?`<div class="banner yday"><p><b>週の振り返り</b>　3分・+30 XP</p><button class="btn" style="background:var(--primary);color:#fff" data-act="openReview">はじめる</button></div>`:'';}
 function weekStats(){let ach=0,kp=0,hb=0,st=0,pm=0,pmMin=0;
   for(let i=0;i<7;i++){const k=key(addDays(new Date(),-i)),d=dayStats(k);if(achieved(k))ach++;if(kept(k))kp++;hb+=d.hb;st+=d.st;const p=S.pomo.log[k];if(p){pm+=p.n;pmMin+=p.min;}}
   return {ach,kp,hb,st,pm,pmMin};}
@@ -952,22 +991,22 @@ function reviewHTML(){
     <div class="chips"><span><b>${W.kp}/7</b>記録した日</span><span><b>${W.ach}/7</b>達成した日</span><span><b>${W.hb}</b>前進</span><span><b>${W.pm}</b>集中（${W.pmMin}分）</span></div>
     <div class="field"><label for="rw1">いちばん良かったこと（1行でOK）</label><textarea id="rw1" placeholder="例：火曜に商品ページを2本公開できた">${esc(rv.wins)}</textarea></div>`;
   if(rvStep===1)body=`<p class="eyebrow">Weekly review 2/4</p><h1 class="setup-h">いちばんの<span class="duo">障害</span>は？</h1>
-    <p class="setup-p">障害を具体的に思い浮かべて、そのときの行動を決めておくと、目標に近づきやすくなります。</p>
+
     <div class="field"><label for="rw2">今週の障害</label><textarea id="rw2" placeholder="例：残業の日は帰って何もできなかった">${esc(rv.obstacle)}</textarea></div>
     ${S.compasses.map((c,i)=>`<div class="field"><label for="rwp${i}">「${esc(c.text)}」で、次にそうなったら</label><input id="rwp${i}" value="${esc(rv.plans[i]??c.plan)}" placeholder="例：残業の日は、帰ってPCを開くだけにする"></div>`).join('')}`;
   if(rvStep===2)body=`<p class="eyebrow">Weekly review 3/4</p><h1 class="setup-h"><span class="duo">きっかけ</span>を見直す。</h1>
-    <p class="setup-p">できなかった前進は、きっかけを変えてみましょう。「考えなくてもやっている度」も選んでください。4以上が3週続くと「卒業」できます。</p>
+    <p class="setup-p">4以上が3週続くと「卒業」できます</p>
     ${S.compasses.map(c=>c.habits.length?`<p class="eyebrow" style="margin-top:6px">${esc(c.text)}</p>`+c.habits.map(h=>{const wk=[0,1,2,3,4,5,6].filter(i=>h.log[key(addDays(new Date(),-i))]).length;
       return `<div class="card"><h4>${esc(h.title)}</h4><span class="muted">今週 ${wk}回${h.freq<7?` / 目標 ${h.freq}回`:''}</span>
       <div class="field"><label for="cue_${h.id}">きっかけ（〇〇したら）</label><input id="cue_${h.id}" value="${esc(rv.cues[h.id]??h.cue)}" placeholder="例：帰宅して着替えたら"></div>
-      <div class="field"><label>考えなくてもやっている度</label><div class="seg" id="auto_${h.id}">${[1,2,3,4,5].map(n=>`<button type="button" data-act="segPick" data-v="${n}" aria-pressed="${(rv.auto[h.id]||0)==n}">${n}</button>`).join('')}</div><span class="hint">1＝毎回がんばって思い出す　5＝やらないと落ち着かない</span></div></div>`;}).join(''):'').join('')||'<p class="setup-p">前進がまだありません。</p>'}`;
+      <div class="field"><label>自然にできている度</label><div class="seg" id="auto_${h.id}">${[1,2,3,4,5].map(n=>`<button type="button" data-act="segPick" data-v="${n}" aria-pressed="${(rv.auto[h.id]||0)==n}">${n}</button>`).join('')}</div><span class="hint">1＝がんばって思い出す　5＝自然にやる</span></div></div>`;}).join(''):'').join('')||'<p class="setup-p">前進がまだありません。</p>'}`;
   if(rvStep===3){const gs=S.compasses.flatMap(c=>c.goals.map(g=>[c,g]));
     body=`<p class="eyebrow">Weekly review 4/4</p><h1 class="setup-h"><span class="duo">中間目標</span>の進み。</h1>
     ${gs.map(([c,g])=>isNum(g)?`<div class="field"><label for="gv_${g.id}">${esc(g.title)}（目標 ${fmtNum(g.target)}${esc(g.unit||'')}${g.due?' · '+jpDate(g.due)+'まで':''}）</label><input id="gv_${g.id}" type="number" inputmode="decimal" value="${rv.gv[g.id]??g.cur??''}" placeholder="現在値"></div>`
       :`<div class="card"><h4>${esc(g.title)}</h4><span class="muted">タスク ${g.tasks.filter(t=>t.done).length} / ${g.tasks.length}${g.due?' · '+jpDate(g.due)+'まで':''}</span></div>`).join('')||'<p class="setup-p">中間目標はまだありません。</p>'}
     ${S.bodyOn?`<div class="card"><h4>体の記録</h4><div class="inl"><input id="bw" type="number" inputmode="decimal" placeholder="体重 kg" value="${rv.w}"><input id="bwa" type="number" inputmode="decimal" placeholder="ウエスト cm" value="${rv.waist}"></div></div>`:''}`;}
   if(rvStep===4)body=`<p class="eyebrow">Done</p><h1 class="setup-h">今週も、<span class="duo">おつかれさま</span>。</h1>
-    <img class="sum" id="rvImg" alt="今週のまとめカード"><p class="setup-p" style="font-size:13px">画像を長押しすると、写真に保存したり共有したりできます。記録を残したり人に見せたりすると、続けやすくなります。</p>`;
+    <img class="sum" id="rvImg" alt="今週のまとめカード"><p class="setup-p" style="font-size:13px">長押しで保存・共有</p>`;
   return `<div class="col"><div class="row"><div class="steps" style="flex:1">${dots}</div><button class="icon-btn" data-act="closeReview" aria-label="閉じる"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>${body}
   <div class="btns">${rvStep>0&&rvStep<4?'<button type="button" class="btn" data-act="rvBack">戻る</button>':''}<button type="button" class="btn primary" data-act="${rvStep===4?'closeReview':'rvNext'}">${rvStep===3?'振り返りを終える':rvStep===4?'閉じる':'次へ'}</button></div></div>`;
 }
@@ -1061,9 +1100,9 @@ function openSheet(title,body,save,del){
 let sheetTheme=null;
 function closeSheet(){$('#scrim').hidden=true;$('#sheet').hidden=true;onSave=null;if(S.setup&&!adding)applyTheme();}
 const newHabit=(t,o={})=>{const m=SUGG_META[t]||{};return {id:uid(),title:t,cue:o.cue||'',slot:o.slot||m.slot||'any',freq:o.freq||m.freq||7,log:{},auto:[]};};
-const habitFields=h=>fld('h1','やること',h.title,'text','小さく。5分で終わるくらいが続きます')+fld('h0','きっかけ（〇〇したら）',h.cue,'text','例：朝コーヒーを淹れたら／帰宅したら')
+const habitFields=h=>fld('h1','やること',h.title,'text')+fld('h0','いつやる？（〇〇したら）',h.cue,'text')
   +`<div class="field"><label>時間帯</label><div class="seg" id="hSlot">${SLOTS.map(([k,n])=>`<button type="button" data-act="segPick" data-v="${k}" aria-pressed="${(h.slot||'any')===k}">${n}</button>`).join('')}</div></div>
-  <div class="field"><label>頻度</label><div class="seg" id="hFreq">${[[7,'毎日'],[5,'週5'],[3,'週3'],[2,'週2'],[1,'週1']].map(([k,n])=>`<button type="button" data-act="segPick" data-v="${k}" aria-pressed="${(h.freq||7)==k}">${n}</button>`).join('')}</div><span class="hint">筋トレのように毎日でなくてよいものは「週◯回」に。</span></div>`;
+  <div class="field"><label>頻度</label><div class="seg" id="hFreq">${[[7,'毎日'],[5,'週5'],[3,'週3'],[2,'週2'],[1,'週1']].map(([k,n])=>`<button type="button" data-act="segPick" data-v="${k}" aria-pressed="${(h.freq||7)==k}">${n}</button>`).join('')}</div></div>`;
 const segVal=id=>{const b=document.querySelector('#'+id+' [aria-pressed="true"]');return b?b.dataset.v:null;};
 const fld=(id,label,val,type='text',hint='')=>`<div class="field"><label for="${id}">${label}</label>${type==='textarea'?`<textarea id="${id}">${esc(val)}</textarea>`:`<input id="${id}" type="${type}" value="${esc(val)}" ${type==='number'?'min="1" inputmode="numeric"':''}>`}${hint?`<span class="hint">${hint}</span>`:''}</div>`;
 const v=id=>($('#'+id)?.value||'').trim();
@@ -1075,13 +1114,16 @@ function restoreFrom(txt){
   const snap=JSON.stringify(S);S=x;normalize();save();closeSheet();viewDay=null;render();
   toast('復元しました',{label:'元に戻す',fn:()=>{S=JSON.parse(snap);normalize();save();render();}});
 }
-const rewardFreezeFld=on=>`<label class="toggle" for="r3"><span>交換するとストリークフリーズを1個もらう<br><small style="color:var(--muted)">休む日のごほうびにおすすめ。記録が途切れません</small></span><input type="checkbox" id="r3" ${on?'checked':''}></label>`;
+const rewardFreezeFld=on=>`<label class="toggle" for="r3"><span>フリーズ付き（休む日用）</span><input type="checkbox" id="r3" ${on?'checked':''}></label>`;
+
+function floatXP(el,n){try{const r=el.getBoundingClientRect(),f=document.createElement('span');f.className='fxp';f.textContent='+'+n;f.style.left=(r.right-56)+'px';f.style.top=(r.top+r.height/2-14)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),950);}catch(e){}}
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-act]')){e.preventDefault();e.target.click();}});
 
 /* ---------- actions ---------- */
 const find=(arr,id)=>arr.find(x=>x.id===id);
 const A={
   editCompass(){const c=cp();sheetTheme=c.theme;
-    openSheet('指針を編集',fld('c1','ひと言の指針',c.text,'text','短く、言い切りで。例：ボクシングでワンツーを上達させる')+fld('c2','なぜそれをやるのか',c.why,'textarea')+fld('c3','期限（任意）',c.deadline||'','date')+fld('c4','障害になりそうなこと',c.obstacle,'text','例：仕事で疲れて帰ると何もしたくなくなる')+fld('c5','そのときどうするか（〇〇なら□□する）',c.plan,'text','例：疲れていたら、PCを開いて5分だけやる')+`<div class="field"><label>テーマカラー</label>${swatches(c.theme)}</div>`,
+    openSheet('指針を編集',fld('c1','指針',c.text,'text')+`<div class="field"><label>色</label>${swatches(c.theme)}</div>`+`<details class="adv"><summary>理由・期限・つまずき対策</summary>`+fld('c2','なぜやるのか',c.why,'textarea')+fld('c3','期限',c.deadline||'','date')+fld('c4','つまずきそうなこと',c.obstacle,'text')+fld('c5','そのときの行動',c.plan,'text')+`</details>`,
     ()=>{if(!v('c1')){toast('指針を入力してください');return false}c.text=v('c1');c.why=v('c2');c.deadline=v('c3');c.obstacle=v('c4');c.plan=v('c5');c.theme=sheetTheme;},
     S.compasses.length>1?()=>{S.compasses.splice(S.cur,1);S.cur=0;}:null);},
   pickTheme(el){const k=el.dataset.k;if(adding||!S.setup){readSetup();draft.theme=k;}else sheetTheme=k;
@@ -1093,30 +1135,33 @@ const A={
   setupNext(){readSetup();
     if(step===0&&!draft.text){toast('指針を入力してください');return}
     sfx('pop');
-    if(step===3){finishSetup();return}
+    if(step===2){finishSetup();return}
     step++;render();scrollTo(0,0);},
   setupBack(){readSetup();step=Math.max(0,step-1);render();},
-  pickStarter(el){const t=el.dataset.t;if(draft.starters.has(t))draft.starters.delete(t);else{if(draft.starters.size>=MAX_STARTERS){toast('はじめの一歩は最大'+MAX_STARTERS+'つまでです');return}draft.starters.add(t);}sfx('pop');render();},
+  pickStarter(el){const t=el.dataset.t;if(draft.starters.has(t))draft.starters.delete(t);else{if(draft.starters.size>=MAX_STARTERS){toast('一歩は'+MAX_STARTERS+'つまで');return}draft.starters.add(t);}sfx('pop');render();},
   addOwnStarter(){const t=v('ss');if(!t)return;if(draft.starters.size>=MAX_STARTERS){toast('はじめの一歩は最大'+MAX_STARTERS+'つまでです');return}draft.starters.add(t);draft.sextra.push(t);render();},
   pickHabit(el){const t=el.dataset.t;readSetup();draft.habits.has(t)?draft.habits.delete(t):draft.habits.add(t);render();},
   addOwnHabit(){readSetup();const t=v('sh');if(!t)return;draft.habits.add(t);draft.extra.push(t);render();setTimeout(()=>$('#sh')&&$('#sh').focus(),0);},
   resetAll(){openSheet('最初からやり直す','<p class="note" style="margin:0">指針・目標・習慣・記録・コインをすべて消して、最初の設定に戻ります。念のため、先にバックアップを保存しておくと安心です。</p>',
     null,()=>{const n=S.notify;S=fresh();S.notify=n;draft=null;step=0;tab='home';viewDay=null;history.replaceState(null,'','#home');});},
   toggleHabit(el){const h=find(cp().habits,el.dataset.id),t=tab==='home'?dk():todayKey();if(!h)return;
-    if(h.log[t]){sfx('tick');commit(t,()=>{delete h.log[t]},-XP.habit);}else{sfx('pop');commit(t,()=>{h.log[t]=1},XP.habit);}},
+    if(h.log[t]){sfx('tick');commit(t,()=>{delete h.log[t]},-XP.habit);}else{sfx('pop');floatXP(el,XP.habit);commit(t,()=>{h.log[t]=1},XP.habit);}},
   toggleStarter(el){const x=find(cp().starters,el.dataset.id),t=tab==='home'?dk():todayKey();if(!x)return;
     if(x.log[t]){sfx('tick');commit(t,()=>{delete x.log[t]},-XP.starter);}
-    else{const first=!dayStats(t).st&&!dayStats(t).hb;sfx('pop');commit(t,()=>{x.log[t]=1},XP.starter);if(first&&!viewDay)setTimeout(()=>toast('動き出せた。記録はつながりました。その勢いで「今日の前進」へ'),250);}},
+    else{const first=!dayStats(t).st&&!dayStats(t).hb;sfx('pop');floatXP(el,XP.starter);commit(t,()=>{x.log[t]=1},XP.starter);if(first&&!viewDay)setTimeout(()=>toast('動き出せた！'),250);}},
+  toggleEdit(){editMode=!editMode;render();sfx('tick');},
+  fillTitle(el){const i=$('#'+el.dataset.f);if(i){i.value=el.dataset.t;}el.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===el));sfx('tick');},
   toYesterday(){viewDay=key(addDays(new Date(),-1));render();scrollTo(0,0);sfx('swipe');},
   toToday(){viewDay=null;render();scrollTo(0,0);},
   segPick(el){el.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===el));sfx('tick');},
   snoozeBackup(){S.backupSnooze=Date.now()+3*864e5;save();render();},
   toastAct(){const f=toastFn;toastFn=null;$('#toast').hidden=true;if(f)f();},
-  addStarter(){if(cp().starters.length>=MAX_STARTERS){toast('はじめの一歩は最大'+MAX_STARTERS+'つまでです');return}
-    openSheet('はじめの一歩を追加',fld('st1','はじめの一歩','','text','数秒〜5分で終わる、行動の入口。例：PCを開く／グローブを手に取る')+fld('st2','前の晩にやっておくこと（任意）','','text','例：グローブを玄関に置く／PCを開いたままにしておく'),
+  addStarter(){if(cp().starters.length>=MAX_STARTERS){toast('一歩は'+MAX_STARTERS+'つまで');return}
+    const sg=starterSuggestionsFor(cp().text).filter(x=>!cp().starters.some(y=>y.title===x)).slice(0,6);
+    openSheet('一歩を追加（5分以内）',`<div class="sugg">${sg.map(t=>`<button type="button" data-act="fillTitle" data-f="st1" data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div>`+fld('st1','やること','','text')+fld('st2','前の晩の準備（任意）','','text'),
     ()=>{if(!v('st1'))return false;cp().starters.push({id:uid(),title:v('st1'),prep:v('st2'),log:{}});});},
   addStarterSugg(el){if(cp().starters.length>=MAX_STARTERS)return;cp().starters.push({id:uid(),title:el.dataset.t,log:{}});sfx('pop');save();render();},
-  editStarter(el){const x=find(cp().starters,el.dataset.id);if(!x)return;openSheet('はじめの一歩を編集',fld('st1','はじめの一歩',x.title,'text','数秒〜5分で終わること')+fld('st2','前の晩にやっておくこと（任意）',x.prep||'','text','夜の準備リストに出てきます'),
+  editStarter(el){const x=find(cp().starters,el.dataset.id);if(!x)return;openSheet('一歩を編集',fld('st1','やること',x.title,'text')+fld('st2','前の晩の準備（任意）',x.prep||'','text'),
     ()=>{if(!v('st1'))return false;x.title=v('st1');x.prep=v('st2');},()=>{cp().starters=cp().starters.filter(y=>y!==x);});},
   toggleFx(el){const k=el.dataset.k;S.fx[k]=!S.fx[k];el.setAttribute('aria-pressed',S.fx[k]);save();if(k==='sound'&&S.fx.sound)sfx('pop');},
   enter(){dismissSplash();},
@@ -1125,20 +1170,21 @@ const A={
     else{const willC=g.tasks.filter(x=>!x.done).length===1;sfx('pop');
       commit(todayKey(),()=>{t.done=true;t.doneAt=todayKey();if(willC)g.doneAt=todayKey();},XP.task+(willC?XP.goal:0));
       if(willC){sfx('fanfare');toast('中間目標「'+g.title+'」を達成しました。+'+XP.goal+' XP');burst();}}},
-  addGoal(){if(cp().goals.length>=MAX_GOALS){toast('中間目標は最大'+MAX_GOALS+'個までです');return}openSheet('中間目標を追加',fld('g1','中間目標',''  ,'text','指針に近づく、期限のある目標。例：EC月商10万円')+fld('g2','期限','','date','例：2026年12月31日')+numFields({}),
+  addGoal(){if(cp().goals.length>=MAX_GOALS){toast('中間目標は最大'+MAX_GOALS+'個までです');return}openSheet('中間目標を追加',fld('g1','中間目標',''  ,'text','例：EC月商10万円')+fld('g2','期限','','date')+numFields({}),
     ()=>{if(!v('g1'))return false;const g={id:uid(),title:v('g1'),due:v('g2'),tasks:[],hist:[],created:todayKey()};readNum(g);cp().goals.push(g);});},
   editGoal(el){const g=find(cp().goals,el.dataset.id);openSheet('中間目標を編集',fld('g1','中間目標',g.title)+fld('g2','期限',g.due||'','date')+numFields(g),
     ()=>{if(!v('g1'))return false;g.title=v('g1');g.due=v('g2');readNum(g);},()=>{cp().goals=cp().goals.filter(x=>x!==g);});},
-  addTask(el){const g=find(cp().goals,el.dataset.g);openSheet('タスクを追加',fld('t1','タスク','','text','「'+esc(g.title)+'」のための、1回で終わる行動'),
+  addTask(el){const g=find(cp().goals,el.dataset.g);openSheet('タスクを追加',fld('t1','タスク','','text'),
     ()=>{if(!v('t1'))return false;g.tasks.push({id:uid(),title:v('t1'),done:false});});},
   editTask(el){const g=find(cp().goals,el.dataset.g),t=find(g.tasks,el.dataset.id);openSheet('タスクを編集',fld('t1','タスク',t.title),
     ()=>{if(!v('t1'))return false;t.title=v('t1');},()=>{g.tasks=g.tasks.filter(x=>x!==t);});},
-  addHabit(){openSheet('前進を追加',habitFields({title:'',cue:'',slot:'any',freq:7}),
+  addHabit(){const sg=suggestions().filter(x=>!cp().habits.some(h=>h.title===x)).slice(0,8);
+    openSheet('前進を追加',`<div class="sugg">${sg.map(t=>`<button type="button" data-act="fillTitle" data-f="h1" data-t="${esc(t)}">${esc(t)}${evTag(t)}</button>`).join('')}</div>`+habitFields({title:'',cue:'',slot:'any',freq:7}),
     ()=>{if(!v('h1'))return false;cp().habits.push(newHabit(v('h1'),{cue:v('h0'),slot:segVal('hSlot'),freq:+segVal('hFreq')}));});},
   editHabit(el){const h=find(cp().habits,el.dataset.id);openSheet('前進を編集',habitFields(h),
     ()=>{if(!v('h1'))return false;h.title=v('h1');h.cue=v('h0');h.slot=segVal('hSlot')||'any';h.freq=+segVal('hFreq')||7;},()=>{cp().habits=cp().habits.filter(x=>x!==h);});},
   addSugg(el){cp().habits.push(newHabit(el.dataset.t));sfx('pop');save();render();toast('「'+el.dataset.t+'」を追加しました');},
-  addReward(){openSheet('ごほうびを追加',fld('r1','ごほうび','','text','がんばった自分にあげたいもの')+fld('r2','必要なコイン',100,'number','目安：1日がんばると約15コイン')+rewardFreezeFld(false),
+  addReward(){openSheet('ごほうびを追加',fld('r1','ごほうび','','text')+fld('r2','コイン',100,'number')+rewardFreezeFld(false),
     ()=>{if(!v('r1'))return false;S.rewards.push({id:uid(),title:v('r1'),cost:Math.max(1,+v('r2')||100),freeze:$('#r3').checked});});},
   editReward(el){const r=find(S.rewards,el.dataset.id);openSheet('ごほうびを編集',fld('r1','ごほうび',r.title)+fld('r2','必要なコイン',r.cost,'number')+rewardFreezeFld(r.freeze),
     ()=>{if(!v('r1'))return false;r.title=v('r1');r.cost=Math.max(1,+v('r2')||100);r.freeze=$('#r3').checked;},()=>{S.rewards=S.rewards.filter(x=>x!==r);});},
@@ -1149,23 +1195,22 @@ const A={
     const status=!('Notification' in window)?'この画面では通知を使えません。':perm==='denied'?'通知がブロックされています。iPhoneの「設定 → 通知」で許可してください。':S.notify.on&&perm==='granted'?'オン':'オフ';
     const lb=S.lastBackup?new Date(S.lastBackup):null;
     openSheet('設定',`<div class="field"><label>演出</label>
-        <div class="toggle"><span>その日最初に開いたときの起動演出</span><button type="button" class="sw" data-act="toggleFx" data-k="splash" aria-pressed="${S.fx.splash}" aria-label="起動演出"></button></div>
+        <div class="toggle"><span>起動演出（1日1回）</span><button type="button" class="sw" data-act="toggleFx" data-k="splash" aria-pressed="${S.fx.splash}" aria-label="起動演出"></button></div>
         <div class="toggle"><span>効果音</span><button type="button" class="sw" data-act="toggleFx" data-k="sound" aria-pressed="${S.fx.sound}" aria-label="効果音"></button></div>
-        <span class="hint">iPhoneはマナーモード中は音が鳴りません。</span></div>
+</div>
       <div class="field"><label>背景</label><div class="bgopts">${Object.entries(BGS).map(([k,[n,c]])=>`<button type="button" data-act="setBg" data-k="${k}" aria-pressed="${S.bg===k}"><i style="background:${c}"></i>${n}</button>`).join('')}</div>
-        <div class="toggle"><span>夜（19時〜6時）は自動でダーク</span><button type="button" class="sw" data-act="toggleNight" aria-pressed="${S.nightDark}" aria-label="夜は自動でダーク"></button></div>
-        <span class="hint">アクセントの色は、指針ごとに「指針を編集」から選べます。</span></div>
+        <div class="toggle"><span>夜は自動でダーク</span><button type="button" class="sw" data-act="toggleNight" aria-pressed="${S.nightDark}" aria-label="夜は自動でダーク"></button></div>
+</div>
       <div class="field"><label>1日の目標</label><div class="seg" id="goalSeg">${[1,2,3,5].map(n=>`<button type="button" data-act="setGoal" data-n="${n}" aria-pressed="${S.dailyCount===n}">前進 ${n}個</button>`).join('')}</div>
-        <span class="hint">はじめの一歩を1つやれば連続記録は続きます。前進がこの数に届くと「達成」です。</span></div>
-      <div class="field"><label>生活の土台と記録</label>
-        <div class="btns"><button type="button" class="btn" data-act="editBase">起床・就寝の時刻を設定</button></div>
-        <div class="toggle"><span>朝に「今朝の調子」をたずねる</span><button type="button" class="sw" data-act="toggleOpt" data-k="moodOn" aria-pressed="${S.moodOn}" aria-label="今朝の調子"></button></div>
-        <div class="toggle"><span>週1回、体重とウエストを記録する</span><button type="button" class="sw" data-act="toggleOpt" data-k="bodyOn" aria-pressed="${S.bodyOn}" aria-label="体の記録"></button></div>
-        <span class="hint">体の記録は週1回の振り返りの中で入力します。毎日の数値のぶれに振り回されないためです。</span></div>
+</div>
+      <div class="field"><label>記録</label>
+        <div class="toggle"><span>今朝の調子をきく</span><button type="button" class="sw" data-act="toggleOpt" data-k="moodOn" aria-pressed="${S.moodOn}" aria-label="今朝の調子"></button></div>
+        <div class="toggle"><span>体重・ウエスト（週1）</span><button type="button" class="sw" data-act="toggleOpt" data-k="bodyOn" aria-pressed="${S.bodyOn}" aria-label="体の記録"></button></div>
+</div>
       <div class="field"><label for="n1">毎日のお知らせ</label><input id="n1" type="time" value="${esc(S.notify.time)}"><span class="hint">状態：${status}</span></div>
       <div class="btns"><button type="button" class="btn" data-act="enableNotify">通知をオンにする</button>${S.notify.on?'<button type="button" class="btn" data-act="disableNotify">オフにする</button>':''}<button type="button" class="btn" data-act="testNotify">テスト送信</button></div>
-      <p class="note">お知らせは<b>アプリを開いている間だけ</b>届きます。iPhoneで毎日確実に知らせたいときは、標準の「リマインダー」アプリで「指針帳を開く」を毎日${esc(S.notify.time)}・繰り返しに設定するのがおすすめです。</p>
-      <div class="field"><label>バックアップ</label><span class="hint">${lb?`最後に保存：${lb.getMonth()+1}月${lb.getDate()}日`:'まだ保存していません'}。記録はこの端末の中だけにあります。</span>
+      <p class="note">アプリを開いている間だけ届きます。確実に知らせたいときは、iPhoneの「リマインダー」で毎日くり返しに。</p>
+      <div class="field"><label>バックアップ</label><span class="hint">${lb?`最後に保存：${lb.getMonth()+1}月${lb.getDate()}日`:'まだ保存していません'}</span>
         <div class="btns"><button type="button" class="btn primary" style="flex:none" data-act="exportBackup">ファイルに保存</button><button type="button" class="btn" data-act="importBackup">ファイルから復元</button></div>
         <details class="adv"><summary>文字でコピー・貼り付けする</summary><div class="btns" style="margin-top:8px"><button type="button" class="btn" data-act="copyBackup">コピー</button><button type="button" class="btn" data-act="restore">貼り付けて復元</button></div>
         <div class="field" id="restoreBox" hidden style="margin-top:8px"><textarea id="rs" placeholder="コピーしたバックアップを貼り付け"></textarea><button type="button" class="btn" data-act="doRestore">この内容で復元する</button></div></details></div>
@@ -1405,9 +1450,9 @@ Object.assign(A,{
 document.addEventListener('change',e=>{if(e.target.matches('[data-pomo-focus]')){S.pomo.focus=e.target.value;save();}});
 
 Object.assign(A,{
-  editBase(){openSheet('生活の土台',`<p class="lead" style="margin:0">毎日おおむね同じ時刻に起きると、体内時計が整い、睡眠時間も確保しやすくなります。休日も±1時間以内が目安です。</p>
+  editBase(){openSheet('起きる・寝る時刻',`
     <div class="inl"><div class="field" style="flex:1"><label for="bWake">起きる時刻</label><input id="bWake" type="time" value="${S.base.wake}"></div><div class="field" style="flex:1"><label for="bSleep">寝る時刻</label><input id="bSleep" type="time" value="${S.base.sleep}"></div></div>
-    <span class="hint">7〜9時間眠れる組み合わせがおすすめです。カフェインの締め切りは寝る8時間前、照明を落とすのは1時間半前で計算します。</span>`,
+    <span class="hint">7〜9時間眠れる時刻に</span>`,
     ()=>{S.base={wake:v('bWake')||'06:30',sleep:v('bSleep')||'23:00',set:true};toast('生活の土台を設定しました');});},
   toggleBase(el){const k=el.dataset.k,t=todayKey(),lg=S.baseLog[t]||(S.baseLog[t]={});
     if(lg[k]){sfx('tick');commit(t,()=>{delete lg[k]},-3);}else{sfx('pop');commit(t,()=>{lg[k]=1},3);}},
@@ -1416,15 +1461,24 @@ Object.assign(A,{
     if(!sel&&!txt){toast('タスクを選ぶか、書いてください');return}
     let title=txt,ref='';if(sel){ref=sel;const o=mitOptions().find(o=>o[0]===sel);title=o?o[1]:txt;}
     S.mit={for:forKey,title,ref,done:false};save();render();sfx('pop');toast('明日の最重要を決めました。朝、いちばん上に出てきます');},
-  clearMit(){S.mit={};save();render();},
+  clearMit(){S.mit={};save();if(!$('#sheet').hidden)A.openTonight();else render();},
+  openTonight(){
+    const nightKey=new Date().getHours()<3?key(addDays(new Date(),-1)):todayKey(), forKey=key(addDays(new Date(nightKey+'T12:00'),1)), set=S.mit.for===forKey&&S.mit.title;
+    const prep=S.compasses.flatMap(c=>c.starters.filter(x=>x.prep)), done=S.prep[nightKey]||{}, opts=mitOptions();
+    openSheet('明日の準備',`<div class="field"><label>明日の最重要（1つだけ）</label>${set?`<div class="inl"><b style="flex:1">${esc(S.mit.title)}</b><button type="button" class="link" data-act="clearMit">変える</button></div>`:`${opts.length?`<select id="mitSel" style="font:inherit;font-size:16px;padding:12px;border-radius:12px;border:0;background:var(--soft);color:var(--fg)"><option value="">タスクから選ぶ</option>${opts.map(o=>`<option value="${o[0]}">${esc(o[1])}</option>`).join('')}</select>`:''}<input id="mitTxt" placeholder="自分で書く">`}</div>
+      ${prep.length?`<div class="field"><label>前の晩の準備</label><div class="list">${prep.map(x=>`<div class="item tap ${done[x.id]?'done':''}" data-act="togglePrep" data-id="${x.id}" role="button" tabindex="0" aria-pressed="${!!done[x.id]}"><span class="check">${CHECK}</span><span class="t"><span>${esc(x.prep)}</span></span></div>`).join('')}</div></div>`:''}`,
+      set?null:()=>{const sel=$('#mitSel')?$('#mitSel').value:'',txt=v('mitTxt');if(!sel&&!txt){closeSheet();return false}
+        let title=txt,ref='';if(sel){ref=sel;const o=mitOptions().find(o=>o[0]===sel);title=o?o[1]:txt;}
+        S.mit={for:forKey,title,ref,done:false};sfx('pop');toast('明日の朝、いちばん上に出ます');});
+    const b=$('#sheetIn .btn.primary');if(b)b.textContent='決める';},
   mitFocus(){S.pomo.focus=S.mit.title;save();A.openPomo();},
   mitDone(){const t=todayKey();
     if(S.mit.ref){const [ci,gi,ti]=S.mit.ref.split('|'),c=S.compasses.find(x=>x.id===ci),g=c&&c.goals.find(x=>x.id===gi),tk=g&&g.tasks.find(x=>x.id===ti);
       if(tk&&!tk.done){const willC=g.tasks.filter(x=>!x.done).length===1;sfx('pop');S.mit.done=true;commit(t,()=>{tk.done=true;tk.doneAt=t;if(willC)g.doneAt=t;},XP.task+(willC?XP.goal:0)+10);toast('今日の最重要、完了。+'+(XP.task+10)+' XP');return}}
     sfx('pop');commit(t,()=>{S.mit.done=true;},10);toast('今日の最重要、完了。+10 XP');},
   togglePrep(el){const nk=new Date().getHours()<3?key(addDays(new Date(),-1)):todayKey(),d=S.prep[nk]||(S.prep[nk]={});
-    if(d[el.dataset.id]){delete d[el.dataset.id];sfx('tick');}else{d[el.dataset.id]=1;sfx('pop');}save();render();},
-  moodPick(el){const t=todayKey(),sl=parseFloat($('#moodSl').value)||7;S.mood[t]={e:+el.dataset.v,sl};save();render();sfx('pop');toast('記録しました。今日もいい一日を');},
+    if(d[el.dataset.id]){delete d[el.dataset.id];sfx('tick');}else{d[el.dataset.id]=1;sfx('pop');}save();el.classList.toggle('done');el.setAttribute('aria-pressed',el.classList.contains('done'));},
+  moodPick(el){const t=todayKey();S.mood[t]=S.base.set?{e:+el.dataset.v,sl:baseTimes().dur}:{e:+el.dataset.v};save();render();sfx('pop');},
   skipMood(){S.mood[todayKey()]={skip:1};save();render();},
   graduate(el){const c=cp(),h=find(c.habits,el.dataset.id);if(!h)return;const snap=JSON.stringify(S);
     c.grad.push({id:h.id,title:h.title,at:todayKey(),total:Object.keys(h.log).length,log:h.log});c.habits=c.habits.filter(x=>x!==h);S.coins+=30;S.badges['g'+h.id]=todayKey();
@@ -1433,7 +1487,7 @@ Object.assign(A,{
     openSheet('現在値を更新',`<div class="field"><label for="gvNow">${esc(g.title)}（目標 ${fmtNum(g.target)}${esc(g.unit||'')}）</label><input id="gvNow" type="number" inputmode="decimal" value="${g.cur??''}"></div>`,
     ()=>{const n=parseFloat(v('gvNow'));if(isNaN(n))return false;const was=goalDone(g);g.cur=n;setHist(g,n);
       if(!was&&goalDone(g)){g.doneAt=todayKey();setTimeout(()=>{sfx('fanfare');burst();commit(todayKey(),()=>{},XP.goal);toast('中間目標「'+g.title+'」を達成しました。+'+XP.goal+' XP');},50);}});},
-  editPlan(){const c=cp();openSheet('もしもの計画',fld('pl1','障害になりそうなこと',c.obstacle,'text','例：仕事で疲れて帰ると何もしたくなくなる')+fld('pl2','そのときどうするか',c.plan,'text','例：疲れていたら、PCを開いて5分だけやる'),
+  editPlan(){const c=cp();openSheet('つまずいたら',fld('pl1','つまずきそうなこと',c.obstacle,'text','例：疲れて帰ると何もしたくない')+fld('pl2','そのときの行動',c.plan,'text','例：PCを開いて5分だけやる'),
     ()=>{c.obstacle=v('pl1');c.plan=v('pl2');});},
   openReview(){rvStep=0;rv={wins:'',obstacle:'',plans:{},cues:{},auto:{},gv:{},w:'',waist:''};const el=$('#rv');el.hidden=false;renderReview();sfx('swipe');},
   closeReview(){$('#rv').hidden=true;render();},
@@ -1474,7 +1528,7 @@ function switchCompass(i,dir){
 })();
 
 /* ---------- routing ---------- */
-function route(){const h=location.hash.slice(1);tab=views[h]?h:'home';render();scrollTo(0,0);}
+function route(){let h=location.hash.slice(1);if(h==='habits'){editMode=true;h='home';history.replaceState(null,'','#home');}tab=views[h]?h:'home';if(tab!=='home')editMode=false;render();scrollTo(0,0);}
 addEventListener('hashchange',route);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(viewDay&&viewDay!==key(addDays(new Date(),-1)))viewDay=null;applyFreezes();render();if(S.setup&&S.fx.splash&&S.lastSplash!==todayKey()){S.lastSplash=todayKey();save();showSplash();}}});
 setInterval(()=>{if(S.setup&&!adding)applyTheme();},60000);
