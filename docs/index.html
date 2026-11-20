@@ -518,12 +518,71 @@ canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-in
 .bump{animation:bump .35s}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media (max-width:380px){.stats{gap:6px}.stat .big{font-size:26px}.badges{grid-template-columns:repeat(3,1fr)}.item{padding:14px}}
+
+/* ===== vivid world overrides ===== */
+/* section entrance animates only on first load, so tab switches feel instant */
+.wrap .col>*{animation:none}
+.wrap.boot .col>*{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+/* tab bar: vivid, big targets, instant */
+nav.tabs .in{background:var(--primary);border:0;box-shadow:0 6px 0 color-mix(in srgb,var(--primary) 60%,#000),0 14px 30px -10px color-mix(in srgb,var(--primary) 70%,transparent);padding:6px;gap:4px;max-width:440px}
+nav.tabs a{min-height:52px;justify-content:center;padding:6px 0;border-radius:99px;color:rgba(255,255,255,.82);font-size:11px;font-weight:800;touch-action:manipulation;-webkit-touch-callout:none;user-select:none;transition:none}
+nav.tabs a svg{width:23px;height:23px;pointer-events:none}
+nav.tabs a[aria-current="page"]{background:#fff;color:var(--primary)}
+nav.tabs a:active{transform:scale(.94)}
+/* no more black surfaces */
+.banner.yday{background:var(--sky);color:#fff;box-shadow:0 5px 0 color-mix(in srgb,var(--alert) 60%,#000)}
+.banner.yday .btn{background:#fff!important;color:var(--primary)!important;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.qbtn.dark{background:var(--violet);color:#fff;box-shadow:0 5px 0 color-mix(in srgb,var(--violet) 60%,#000)}
+.qbtn.dark small{color:rgba(255,255,255,.85)}
+.toast{background:var(--fg);color:var(--bg)}
+.toast button{color:var(--calm)}
+#pomo,.ov,.celebrate .card{background:var(--sky);color:#fff}
+#pomo::before,.ov::before,.celebrate .card::before{display:none}
+.pm-top .eyebrow,.pm-time span,.pm-stat,.pm-field label,.ov .card .muted,.ov .chips span{color:rgba(255,255,255,.88)}
+.pm .seg,.ov .seg{background:rgba(255,255,255,.22)}
+.pm .seg button,.ov .seg button{color:#fff}
+.pm .seg button[aria-pressed="true"],.ov .seg button[aria-pressed="true"]{background:#fff;color:var(--primary)}
+.pm-ring .bg{stroke:rgba(255,255,255,.3)}
+.pm-main{background:#fff;color:var(--primary);box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.pm-sub{background:rgba(255,255,255,.22);color:#fff}
+.pm-field select{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.35);color:#fff}
+.pm-dots i{background:rgba(255,255,255,.35)} .pm-dots i.on{background:#fff}
+.rest span{background:rgba(255,255,255,.22)}
+.ov .card,.ov .chips span{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3)}
+.ov .chips b{color:#fff}
+.celebrate .card p{color:rgba(255,255,255,.9)} .celebrate .card b{color:#fff}
+.celebrate .card .big{background:none;-webkit-text-fill-color:#fff;color:#fff}
+body.setup{background:var(--sky);color:#fff}
+body.setup::after{display:none}
+body.setup .setup-wrap{background:none}
+:is(body.setup,.ov) .eyebrow,:is(body.setup,.ov) .setup-p,:is(body.setup,.ov) .field label,:is(body.setup,.ov) .hint,:is(body.setup,.ov) details.adv{color:rgba(255,255,255,.9)}
+:is(body.setup,.ov) .field input,:is(body.setup,.ov) .field textarea,:is(body.setup,.ov) .field select,body.setup .goal-in input,body.setup #sh{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4)!important;color:#fff;color-scheme:dark}
+:is(body.setup,.ov) .field input::placeholder,body.setup .goal-in input::placeholder,body.setup #sh::placeholder{color:rgba(255,255,255,.75)}
+:is(body.setup,.ov) .btn{background:rgba(255,255,255,.22);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+:is(body.setup,.ov) .btn.primary{background:#fff;color:var(--primary);box-shadow:0 5px 0 rgba(0,0,0,.18)}
+:is(body.setup,.ov) .sugg button{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.35)}
+:is(body.setup,.ov) .sugg button.on{background:#fff;color:var(--primary);border-color:#fff}
+.steps i{background:rgba(255,255,255,.3)} .steps i.on{background:#fff}
+.setup-h .duo,.ov .duo{background:none;-webkit-text-fill-color:#fff;color:#fff;text-decoration:underline;text-decoration-thickness:5px;text-underline-offset:8px;text-decoration-color:rgba(255,255,255,.45)}
+/* climb card */
+.alt{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:22px;background:var(--card);box-shadow:var(--shadow)}
+.alt .top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.alt .left{font-family:var(--f-disp);font-size:34px;font-weight:800;line-height:1;color:var(--primary);letter-spacing:-.02em}
+.alt .u{font-weight:800;font-size:15px}
+.alt .chip{margin-left:auto;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:color-mix(in srgb,var(--calm) 35%,var(--soft));color:var(--fg)}
+.alt .eta{margin:0;font-size:14px;font-weight:700}
+.alt .eta b{color:var(--primary)}
+.alt .next{margin:0;font-size:13px;color:var(--muted)}
+.abar{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;position:relative}
+.abar i{display:block;height:100%;border-radius:99px;background:var(--sky);background:linear-gradient(90deg,var(--calm),var(--violet),var(--alert));min-width:14px}
+.abar span{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:10px;font-weight:800;color:var(--muted)}
+.mtn .me{r:8}
 </style>
 
 </head><body>
 <header id="bar"></header>
 <section id="hero"></section>
-<main class="wrap gut"><div class="col" id="app"></div></main>
+<main class="wrap gut boot"><div class="col" id="app"></div></main>
 
 <nav class="tabs" aria-label="ページ"><div class="in">
   <a href="#home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 4.5 6 6.5 6 12a6 6 0 01-12 0c0-3.2 2-4.7 2.7-7.3.8 2 1.6 2.6 2.3 2.6 0-3.4-.4-5.2 1-7.3z"/></svg>今日</a>
@@ -563,7 +622,7 @@ const MAX_GOALS=3, MAX_COMPASS=3;
 function fresh(){
   return {v:3,setup:false,compasses:[],cur:0,bg:'auto',fx:{sound:true,splash:true},pomo:{work:25,brk:5,mode:'work',running:false,endAt:0,left:0,round:0,focus:'',log:{}},
     rewards:[{id:uid(),title:'好きなものを食べに行く',cost:80},{id:uid(),title:'まる1日なにもしない日',cost:200,freeze:true}],
-    days:{},xp:0,coins:0,freezes:1,dailyCount:2,badges:{},redeemed:[],nightDark:true,since:todayKey(),lastBackup:0,backupSnooze:0,lastSplash:'',v:4,
+    days:{},xp:0,coins:0,freezes:1,dailyCount:2,badges:{},redeemed:[],nightDark:true,since:todayKey(),lastBackup:0,backupSnooze:0,lastSplash:'',v:5,
     notify:{on:false,time:'21:00',last:''}
   };
 }
@@ -581,17 +640,18 @@ function normalize(){
   S.cur=Math.max(0,Math.min(S.cur||0,S.compasses.length-1));
   if(!S.fx)S.fx={sound:true,splash:true}; if(!S.bg)S.bg='auto';
   if(!S.pomo)S.pomo={work:25,brk:5,mode:'work',running:false,endAt:0,left:0,round:0,focus:'',log:{}};
+  if(S.v===4){S.moodOn=false;S.v=5;}
   if(!S.v||S.v<4){ // v4: achievement is computed from checks; keep old history as legacy marks
     Object.values(S.days||{}).forEach(d=>{if(d.bonus){d.legacyDone=true;d.legacyKept=true;}else if(d.xp>0)d.legacyKept=true;});
     (S.rewards||[]).forEach(r=>{if(/なにもしない|オフ|休/.test(r.title))r.freeze=true;});
-    S.v=4;}
+    S.v=5;}
   S.compasses.forEach(c=>{c.habits.forEach(h=>{h.slot=h.slot||'any';h.freq=h.freq||7;h.cue=h.cue||'';delete h.xp;});});
   if(!S.dailyCount)S.dailyCount=2; if(S.nightDark===undefined)S.nightDark=true;
   if(!S.since){const ks=Object.keys(S.days||{});S.compasses.forEach(c=>[...c.starters,...c.habits].forEach(x=>ks.push(...Object.keys(x.log||{}))));S.since=ks.sort()[0]||todayKey();} if(S.lastBackup===undefined)S.lastBackup=0;
   if(S.pomo.brkNow===undefined)S.pomo.brkNow=0;
   S.base=S.base||{wake:'06:30',sleep:'23:00',set:false}; S.baseLog=S.baseLog||{}; S.reviews=S.reviews||[]; S.mit=S.mit||{};
-  S.prep=S.prep||{}; S.mood=S.mood||{}; if(S.moodOn===undefined)S.moodOn=true; if(S.bodyOn===undefined)S.bodyOn=false; S.body=S.body||[];
-  S.compasses.forEach(c=>{c.obstacle=c.obstacle||'';c.plan=c.plan||'';c.grad=c.grad||[];c.habits.forEach(h=>{h.auto=h.auto||[];});
+  S.prep=S.prep||{}; S.mood=S.mood||{}; if(S.moodOn===undefined)S.moodOn=false; if(S.bodyOn===undefined)S.bodyOn=false; S.body=S.body||[];
+  S.compasses.forEach(c=>{c.created=c.created||S.since||todayKey();c.obstacle=c.obstacle||'';c.plan=c.plan||'';c.grad=c.grad||[];c.habits.forEach(h=>{h.auto=h.auto||[];});
     c.starters.forEach(x=>{x.prep=x.prep||'';});c.goals.forEach(g=>{g.hist=g.hist||[];g.created=g.created||S.since||todayKey();});});
 }
 function load(){
@@ -649,15 +709,18 @@ function commit(k,mutate,xp){
 
 /* ---------- themes ---------- */
 const THEMES={
-  ember:{name:'サンライズ',calm:'#FFD600',violet:'#FF6D00',alert:'#FF1F5A',primary:'#FF1F5A',volt:'#FFEA00'},
-  neon:{name:'ミッドナイト',calm:'#00E5FF',violet:'#7C4DFF',alert:'#E000FF',primary:'#7C4DFF',volt:'#00FFC8'},
-  volt:{name:'ジャングル',calm:'#D4FF00',violet:'#00E676',alert:'#00B8D4',primary:'#00A86B',volt:'#D4FF00'},
-  blood:{name:'マグマ',calm:'#FFB300',violet:'#FF3D00',alert:'#E0002A',primary:'#E0002A',volt:'#FFE000'},
-  ocean:{name:'オーシャン',calm:'#2EFFF0',violet:'#00A8FF',alert:'#3D5AFE',primary:'#2962FF',volt:'#2EFFF0'},
-  gold:{name:'ゴールド',calm:'#FFF200',violet:'#FFB300',alert:'#FF6A00',primary:'#F05A00',volt:'#FFF200'}
+  ember:{name:'サンライズ',alert:'#FF2D87',violet:'#FF7A00',calm:'#FFE600',primary:'#FF2D87',volt:'#FFE600'},
+  dream:{name:'ドリーム',alert:'#FF3FA4',violet:'#B65CFF',calm:'#5CD3FF',primary:'#C23BFF',volt:'#5CD3FF'},
+  neon:{name:'ギャラクシー',alert:'#4A2BFF',violet:'#B03BFF',calm:'#FF5CA8',primary:'#5B2BFF',volt:'#FF5CA8'},
+  ocean:{name:'オーシャン',alert:'#1D4DFF',violet:'#00A3FF',calm:'#00F0D8',primary:'#1D4DFF',volt:'#00F0D8'},
+  lagoon:{name:'ラグーン',alert:'#00A8FF',violet:'#00D6B4',calm:'#B8FF3C',primary:'#0091EA',volt:'#B8FF3C'},
+  volt:{name:'ジャングル',alert:'#00A35F',violet:'#5ED400',calm:'#FFE500',primary:'#00A35F',volt:'#FFE500'},
+  gold:{name:'シトラス',alert:'#FF6A00',violet:'#FFB800',calm:'#C6FF00',primary:'#F25C00',volt:'#C6FF00'},
+  blood:{name:'マグマ',alert:'#D4002C',violet:'#FF4D00',calm:'#FFB000',primary:'#E0002A',volt:'#FFB000'}
 };
 const THEME_KEYS=Object.keys(THEMES);
-const BGS={auto:['自動','linear-gradient(135deg,#F8F9FB 50%,#0E0F11 50%)'],light:['ライト','#F8F9FB'],dark:['ダーク','#17191C'],black:['ブラック','#000'],tint:['テーマ色','color-mix(in srgb,var(--alert) 30%,#0A0A0C)']};
+const _BGS={auto:['自動','linear-gradient(135deg,#F8F9FB 50%,#0E0F11 50%)'],light:['ライト','#F8F9FB'],dark:['ダーク','#17191C'],black:['ブラック','#000'],tint:['テーマ色','color-mix(in srgb,var(--alert) 30%,#0A0A0C)']};
+const BGS=_BGS;
 const themeGrad=k=>{const t=THEMES[k]||THEMES.ember;return `linear-gradient(180deg,${t.alert},${t.violet} 55%,${t.calm})`;};
 function applyTheme(k){
   const t=THEMES[k||cp().theme]||THEMES.ember, r=document.documentElement.style;
@@ -700,20 +763,33 @@ function pagerHTML(){
   return `<div class="pager">${S.compasses.map((c,i)=>`<button class="pg ${i===S.cur?'on':''}" data-act="goCompass" data-i="${i}" aria-label="ゴール ${i+1}：${esc(c.text)}"></button>`).join('')}
   ${n<MAX_COMPASS?`<button class="pg-add" data-act="addCompass" aria-label="ゴールを追加">＋ ゴール</button>`:''}</div>`;
 }
+// Every check is one step up the mountain. The summit is sized so that meeting the daily quota every day
+// until the goal's deadline (or for a year) reaches it, so "keep stacking and you will arrive" is literally true.
+function climb(c){c=c||cp();
+  const start=c.created||S.since||todayKey(), t=todayKey();
+  const days=c.deadline?Math.max(30,daysBetween(start,c.deadline)):365, perDay=Math.max(1,S.dailyCount)+1, summit=days*perDay;
+  const logs=[...c.starters,...c.habits,...(c.grad||[])].map(x=>x.log||{});
+  let steps=0,recent=0,today=0;
+  logs.forEach(l=>Object.keys(l).forEach(k=>{steps++;if(daysBetween(k,t)<14)recent++;if(k===t)today++;}));
+  c.goals.forEach(g=>g.tasks.forEach(x=>{if(x.done){steps++;if(x.doneAt&&daysBetween(x.doneAt,t)<14)recent++;if(x.doneAt===t)today++;}}));
+  const left=Math.max(0,summit-steps), used=Math.min(14,Math.max(1,daysBetween(start,t)+1)), pace=recent/used;
+  return {steps,summit,left,today,frac:Math.min(1,steps/summit),pace,eta:pace>0?addDays(new Date(),Math.ceil(left/pace)):null,plan:addDays(new Date(),Math.ceil(left/perDay)),start};
+}
+const jpMD=d=>`${d.getFullYear()!==new Date().getFullYear()?d.getFullYear()+'年':''}${d.getMonth()+1}月${d.getDate()}日`;
 // Trail across the mountains (viewBox 400x150). Checkpoints sit along it; the climber marks progress.
 const TRAIL=[[18,140],[70,118],[118,124],[165,96],[205,104],[248,74],[282,82],[322,40]];
 function trailAt(f){const seg=[];let L=0;for(let i=1;i<TRAIL.length;i++){const d=Math.hypot(TRAIL[i][0]-TRAIL[i-1][0],TRAIL[i][1]-TRAIL[i-1][1]);seg.push(d);L+=d;}
   let t=Math.max(0,Math.min(1,f))*L;for(let i=0;i<seg.length;i++){if(t<=seg[i]){const r=seg[i]?t/seg[i]:0;return [TRAIL[i][0]+(TRAIL[i+1][0]-TRAIL[i][0])*r,TRAIL[i][1]+(TRAIL[i+1][1]-TRAIL[i][1])*r];}t-=seg[i];}return TRAIL[TRAIL.length-1];}
 function mountainSVG(withTrail){
-  const gs=cp().goals, n=gs.length, prog=n?gs.reduce((a,g)=>a+(isNum(g)?goalPct(g):(g.tasks.length?g.tasks.filter(t=>t.done).length/g.tasks.length:0)),0)/n:0;
-  const me=trailAt(.04+prog*.9);
-  const cps=gs.map((g,i)=>{const [x,y]=trailAt((i+1)/(n+1));const ok=isNum(g)?goalDone(g):(g.tasks.length&&g.tasks.every(t=>t.done));return `<circle class="cp ${ok?'ok':''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6"/>`;}).join('');
+  const c=cp(), gs=c.goals, n=gs.length, cl=climb(c), me=trailAt(.02+cl.frac*.98), st=c.created||S.since||todayKey();
+  const cpFrac=(g,i)=>c.deadline&&g.due?Math.max(.08,Math.min(.95,daysBetween(st,g.due)/Math.max(1,daysBetween(st,c.deadline)))):(i+1)/(n+1);
+  const cps=gs.map((g,i)=>{const [x,y]=trailAt(cpFrac(g,i));const ok=isNum(g)?goalDone(g):(g.tasks.length&&g.tasks.every(t=>t.done));return `<circle class="cp ${ok?'ok':''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6"/>`;}).join('');
   return `<svg class="mtn" viewBox="0 0 400 150" preserveAspectRatio="none" aria-hidden="true">
   <path class="r1" d="M0 150V92l46-30 40 24 52-50 46 38 40-30 52 40 46-62 78 58v70z"/>
   <path class="r2" d="M0 150v-30l60-28 50 22 60-40 44 26 52-30 34 14 40-46 60 60v52z"/>
   ${withTrail?`<polyline class="trail" points="${TRAIL.map(p=>p.join(',')).join(' ')}"/>${cps}
   <path class="flag" d="M322 40V18l16 6-16 6"/><rect class="flag" x="320.5" y="17" width="2" height="24"/>
-  <circle class="me" cx="${me[0].toFixed(1)}" cy="${me[1].toFixed(1)}" r="7"/>`:''}
+  <circle class="me" cx="${me[0].toFixed(1)}" cy="${me[1].toFixed(1)}" r="8"/><circle cx="${me[0].toFixed(1)}" cy="${me[1].toFixed(1)}" r="3.5" fill="var(--primary)"/>`:''}
   <path class="r3" d="M0 150v-12c40-8 70-2 110-10s80-14 130-8 90 10 160 2v28z"/></svg>`;
 }
 function heroHTML(){
@@ -727,11 +803,7 @@ function heroHTML(){
   <button class="compass" data-act="editCompass" aria-label="ゴールを編集"><h1>${esc(cp().text)}</h1>
     ${cp().why?`<p class="why">${esc(cp().why)}</p>`:''}</button>
   ${st&&missedYesterday()?'<p class="hero-warn">今日ひとつやれば、連続記録が続きます</p>':''}
-  <div class="srow">
-    <div class="sr-item"><svg class="flame ${lit?'lit':''}" viewBox="0 0 30 34"><path class="o" d="M15 1c2 6 9 9 9 19a9 9 0 01-18 0c0-5 3-7 4-11 1 3 2 4 3 4 0-5 0-8 2-12z"/><path class="i" d="M15 17c1 3 4 4 4 8a4 4 0 01-8 0c0-2 1-3 2-5 .5 1 1 1.5 1.5 1.5 0-2 0-3 .5-4.5z"/></svg><span><b data-count="${st}">${st}</b><small>日連続</small></span></div>
-    <div class="sr-item"><svg class="ring mini" viewBox="0 0 36 36">${DUO_DEFS}<circle class="bgc" cx="18" cy="18" r="14" fill="none" stroke-width="5"/><circle class="fgc" cx="18" cy="18" r="14" fill="none" stroke="url(#duoG)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}" style="--c:${C}" transform="rotate(-90 18 18)" ${pct?'':'opacity="0"'}/></svg><span><b class="num">${ds.hb}<span style="font-size:15px;opacity:.6">/${S.dailyCount}</span></b><small>${done?'クリア！':'ノルマ'}</small></span></div>
-    <div class="sr-item"><span class="sr-lv"><b data-count="${li.lv}">${li.lv}</b><span class="lvbar"><i style="width:${li.cur/li.need*100}%"></i></span></span><small>レベル</small></div>
-  </div>${mountainSVG(true)}`;
+${mountainSVG(true)}`;
 }
 let viewDay=null; // null = today; otherwise yesterday's key while back-filling
 const dk=()=>viewDay||todayKey();
@@ -756,15 +828,23 @@ function viewHome(){
     rows.push(row({act:'toggleHabit',edit:'editHabit',id:h.id,done:!!h.log[k],title:h.title,tag:h.slot&&h.slot!=='any'?slotName(h.slot):'',sub}));});
   const total=rows.length, done=rows.filter(r=>r.includes('aria-pressed="true"')).length;
   const yd=key(addDays(new Date(),-1)), [, ym, ydd]=yd.split('-').map(Number);
-  return `${y?'':reviewBanner()+backupBanner()}
+  return `${y?'':climbCard()}
+  ${y?'':reviewBanner()+backupBanner()}
   ${y?'':moodHTML()}
   <section class="panel ${editMode?'edit-on':''}"><div class="today-h"><h2>${y?`昨日（${ym}/${ydd}）`:'今日やること'}</h2><span class="num">${done}/${total}</span><button class="link" data-act="toggleEdit">${editMode?'完了':'編集'}</button></div>
   <div class="pbar"><i style="width:${total?done/total*100:0}%"></i></div>
   <div class="list">${rows.join('')||'<div class="empty">「編集」から追加</div>'}</div>
   ${editMode?`<div class="addrow"><button class="add" data-act="addStarter">＋ まず5分</button><button class="add" data-act="addHabit">＋ 毎日やること</button></div>`:''}
   ${y?'<button class="subtle c" data-act="toToday">今日に戻る</button>':(editMode?'':'<button class="subtle c" data-act="toYesterday">昨日の分をつける</button>')}</section>
-  ${y?'':quickRow()}
-  ${y?'':milestonesHTML()}`;
+  ${y?'':quickRow()}`;
+}
+function climbCard(){
+  const c=cp(), cl=climb(c), st=streak();
+  const nextG=c.goals.filter(g=>!(isNum(g)?goalDone(g):(g.tasks.length&&g.tasks.every(t=>t.done)))).sort((a,b)=>(a.due||'9')<(b.due||'9')?-1:1)[0];
+  const eta=cl.left===0?'<p class="eta">山頂に到着！</p>':cl.eta?`<p class="eta">このペースなら <b>${jpMD(cl.eta)}</b> に山頂</p>`:`<p class="eta">毎日ノルマをこなせば <b>${jpMD(cl.plan)}</b> に山頂</p>`;
+  return `<div class="alt"><div class="top"><span class="left">${cl.left.toLocaleString()}</span><span class="u">歩で山頂</span><span class="chip">${st?`連続 ${st}日`:'今日から'}${cl.today?` · 今日 +${cl.today}歩`:''}</span></div>
+  <div class="abar" role="progressbar" aria-valuenow="${Math.round(cl.frac*100)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${cl.frac*100}%"></i><span>${cl.steps.toLocaleString()} / ${cl.summit.toLocaleString()}歩</span></div>
+  ${eta}${c.deadline&&cl.left&&cl.eta&&key(cl.eta)>c.deadline?`<p class="next">期限（${jpMD(new Date(c.deadline+'T12:00'))}）に間に合わせるなら、1日 <b>${Math.ceil(cl.left/Math.max(1,daysLeft(c.deadline)))}歩</b></p>`:''}${nextG?`<p class="next">次のチェックポイント：${esc(nextG.title)}${nextG.due?`（あと${daysLeft(nextG.due)}日）`:''}</p>`:''}</div>`;
 }
 function row(o){
   const act=editMode?o.edit:o.act;
@@ -878,7 +958,7 @@ function viewSetup(){
   <div class="btns">${step?'<button type="button" class="btn" data-act="setupBack">戻る</button>':(adding?'<button type="button" class="btn" data-act="cancelAdd">やめる</button>':'')}<button type="button" class="btn primary" data-act="setupNext">${step===2?'はじめる':'次へ'}</button></div></div></div>`;
 }
 function finishSetup(){
-  const c={id:uid(),text:draft.text,why:draft.why,deadline:draft.deadline,theme:draft.theme,goals:[],habits:[],starters:[]};
+  const c={id:uid(),text:draft.text,why:draft.why,deadline:draft.deadline,theme:draft.theme,goals:[],habits:[],starters:[],created:todayKey()};
   (draft.goals||[]).forEach((g,i)=>{if(g&&c.goals.length<MAX_GOALS)c.goals.push({id:uid(),title:g,due:(draft.gdue||[])[i]||'',tasks:[]})});
   draft.habits.forEach(t=>{if(!c.habits.some(h=>h.title===t))c.habits.push(newHabit(t))});
   c.starters=[...draft.starters].slice(0,MAX_STARTERS).map(t=>({id:uid(),title:t,log:{}}));
@@ -1148,7 +1228,7 @@ function restoreFrom(txt){
 }
 const rewardFreezeFld=on=>`<label class="toggle" for="r3"><span>おやすみ券付き（休む日用）</span><input type="checkbox" id="r3" ${on?'checked':''}></label>`;
 
-function floatXP(el,n){try{const r=el.getBoundingClientRect(),f=document.createElement('span');f.className='fxp';f.textContent='+'+n;f.style.left=(r.right-56)+'px';f.style.top=(r.top+r.height/2-14)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),950);}catch(e){}}
+function floatXP(el,n){try{const r=el.getBoundingClientRect(),f=document.createElement('span');f.className='fxp';f.textContent='+1歩';f.style.left=(r.right-56)+'px';f.style.top=(r.top+r.height/2-14)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),950);}catch(e){}}
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-act]')){e.preventDefault();e.target.click();}});
 
 /* ---------- actions ---------- */
@@ -1358,7 +1438,7 @@ function showSplash(){
     <blockquote class="sp-q"><p aria-label="${esc(q)}">${chars}</p><cite>— ${esc(who)}</cite></blockquote>
     <div class="sp-main"><p class="eyebrow">ゴール${S.compasses.length>1?` ${S.cur+1}/${S.compasses.length}`:''}</p>
     <h1>${esc(cp().text)}</h1>
-    <div class="sp-streak"><svg class="flame ${st?'lit':''}" viewBox="0 0 30 34" width="26" height="30"><path class="o" d="M15 1c2 6 9 9 9 19a9 9 0 01-18 0c0-5 3-7 4-11 1 3 2 4 3 4 0-5 0-8 2-12z"/><path class="i" d="M15 17c1 3 4 4 4 8a4 4 0 01-8 0c0-2 1-3 2-5 .5 1 1 1.5 1.5 1.5 0-2 0-3 .5-4.5z"/></svg><span><b>${st}</b> 日連続${doneToday?' · 今日は達成済み':''}</span></div>
+    <div class="sp-streak"><svg class="flame ${st?'lit':''}" viewBox="0 0 30 34" width="26" height="30"><path class="o" d="M15 1c2 6 9 9 9 19a9 9 0 01-18 0c0-5 3-7 4-11 1 3 2 4 3 4 0-5 0-8 2-12z"/><path class="i" d="M15 17c1 3 4 4 4 8a4 4 0 01-8 0c0-2 1-3 2-5 .5 1 1 1.5 1.5 1.5 0-2 0-3 .5-4.5z"/></svg><span>山頂まで あと <b>${climb().left.toLocaleString()}</b> 歩${st?` · 連続${st}日`:''}</span></div>
     <button type="button" class="sp-go" data-act="enter">${doneToday?'今日もひらく':'今日をはじめる'}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div></div>`;
   sp.hidden=false; sp.classList.remove('out');
   sp.onclick=e=>{if(!e.target.closest('[data-act]'))dismissSplash();};
@@ -1543,7 +1623,7 @@ function switchCompass(i,dir){
 }
 (function(){
   let x0=0,y0=0,dx=0,mode=null;
-  const blocked=t=>!S.setup||adding||tab==='rewards'||!$('#sheet').hidden||!$('#cele').hidden||!$('#splash').hidden||!$('#pomo').hidden||!$('#rv').hidden||t.closest('input,textarea,select,.sheet');
+  const blocked=t=>!S.setup||adding||tab==='rewards'||!$('#sheet').hidden||!$('#cele').hidden||!$('#splash').hidden||!$('#pomo').hidden||!$('#rv').hidden||t.closest('input,textarea,select,.sheet,nav');
   addEventListener('touchstart',e=>{if(e.touches.length!==1||blocked(e.target)){mode='off';return}x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;mode=null;},{passive:true});
   addEventListener('touchmove',e=>{if(mode==='off'||switching)return;const x=e.touches[0].clientX-x0,y=e.touches[0].clientY-y0;
     if(!mode){if(Math.abs(x)>10&&Math.abs(x)>Math.abs(y)*1.4)mode='h';else if(Math.abs(y)>10)mode='v';}
@@ -1558,6 +1638,13 @@ function switchCompass(i,dir){
   });
   addEventListener('keydown',e=>{if(blocked(e.target))return;if(e.key==='ArrowRight')switchCompass(S.cur+1,1);if(e.key==='ArrowLeft')switchCompass(S.cur-1,-1);});
 })();
+
+/* ---------- tabs: switch on press, not after the click delay ---------- */
+document.querySelectorAll('nav.tabs a').forEach(a=>{
+  const go=e=>{e.preventDefault();const h='#'+a.dataset.tab;document.querySelectorAll('nav.tabs a').forEach(x=>x.setAttribute('aria-current',x===a?'page':'false'));if(location.hash!==h)location.hash=h;else scrollTo({top:0,behavior:'smooth'});};
+  a.addEventListener('pointerup',go);a.addEventListener('click',e=>e.preventDefault());
+});
+setTimeout(()=>{const w=document.querySelector('.wrap');if(w)w.classList.remove('boot');},1200);
 
 /* ---------- routing ---------- */
 function route(){let h=location.hash.slice(1);if(h==='habits'){editMode=true;h='home';history.replaceState(null,'','#home');}tab=views[h]?h:'home';if(tab!=='home')editMode=false;render();scrollTo(0,0);}

@@ -1,5 +1,5 @@
 // 指針帳 service worker: offline cache + daily reminder
-const VERSION='d669863488';            // replaced by build.py on every build, so each release installs a new worker
+const VERSION='7032f1de89';            // replaced by build.py on every build, so each release installs a new worker
 const CACHE='shishincho-'+VERSION;
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(u=>new Request(u,{cache:'reload'})))));self.skipWaiting();});
