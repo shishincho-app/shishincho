@@ -2,7 +2,7 @@
 
 中長期の目標（指針）を毎日目に入れて、5分以内の「はじめの一歩」と毎日の前進を続けるための習慣アプリです。
 
-**アプリを開く：** https://sakyo0723left-dev.github.io/shishincho/
+**アプリを開く：** https://shishincho-app.github.io/shishincho/
 
 iPhoneではSafariで開き、「共有 → ホーム画面に追加」するとアプリとして使えます。
 記録はそれぞれの端末の中（ブラウザの保存領域）だけに保存され、どこにも送信されません。
