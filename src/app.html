@@ -608,6 +608,27 @@ body.setup .setup-wrap{background:none}
 .rates .item{gap:12px}
 .rates svg{width:40px;height:40px;flex:none}
 .rates .pc{font-family:var(--f-disp);font-weight:800;font-size:15px;min-width:44px;text-align:right}
+
+.swatches{padding:6px 2px 4px 6px;margin:0}
+/* tips */
+.tip-hero{display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:22px;background:var(--sky);color:#fff;box-shadow:0 5px 0 color-mix(in srgb,var(--alert) 55%,#000)}
+.tip-hero .eyebrow{color:rgba(255,255,255,.9)}
+.tip-hero h3{margin:0;font-size:22px;font-weight:900;line-height:1.35}
+.tip-hero p{margin:0;font-size:15px;line-height:1.7}
+.tip-hero .btn{align-self:flex-start;background:#fff;color:var(--primary);box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cats button{flex:none;padding:9px 14px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);font-weight:800;font-size:13px}
+.cats button[aria-pressed="true"]{background:var(--primary);color:#fff;box-shadow:0 4px 0 color-mix(in srgb,var(--primary) 60%,#000)}
+.tips{display:flex;flex-direction:column;gap:12px}
+.tip{display:flex;gap:14px;padding:16px;border-radius:20px;background:var(--card);box-shadow:var(--shadow)}
+.tip .n{flex:none;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--primary) 14%,var(--soft));color:var(--primary);font-family:var(--f-disp);font-weight:800}
+.tip h4{margin:0 0 4px;font-size:16px;font-weight:800;line-height:1.4}
+.tip p{margin:0;font-size:14px;line-height:1.7;color:var(--muted)}
+.tip .mini{margin-top:10px;display:inline-block}
+.frz-card{display:flex;gap:14px;align-items:center;padding:16px;border-radius:20px;background:color-mix(in srgb,var(--ice) 14%,var(--card));box-shadow:var(--shadow)}
+.frz-card b{font-family:var(--f-disp);font-size:26px}
+.frz-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
 </style>
 
 <header id="bar"></header>
@@ -618,7 +639,7 @@ body.setup .setup-wrap{background:none}
   <a href="#home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1.5 4.5 6 6.5 6 12a6 6 0 01-12 0c0-3.2 2-4.7 2.7-7.3.8 2 1.6 2.6 2.3 2.6 0-3.4-.4-5.2 1-7.3z"/></svg>今日</a>
   <a href="#goals" data-tab="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>マップ</a>
   <a href="#record" data-tab="record"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>記録</a>
-  <a href="#rewards" data-tab="rewards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8S10.5 3 7.5 3a2.5 2.5 0 000 5M12 8s1.5-5 4.5-5a2.5 2.5 0 010 5"/></svg>ごほうび</a>
+  <a href="#tips" data-tab="tips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z"/></svg>ヒント</a>
 </div></nav>
 
 <div class="scrim" id="scrim" hidden></div>
@@ -733,8 +754,8 @@ function commit(k,mutate,xp){
   else if(wasA&&!isA&&d.bonus){d.bonus=false;S.coins=Math.max(0,S.coins-DAY_BONUS);}
   const badge=checkBadges(); save(); render();
   if(party){sfx('fanfare');celebrate(streak(),badge,streak()>stB);}
-  else if(badge){sfx('coin');toast('トロフィー獲得：'+badge);}
-  else if(!wasA&&isA)toast('クリア！ +'+DAY_BONUS+' コイン');
+  else if(!wasA&&isA)toast('今日のノルマ、クリア！');
+  if(isA||kept(k))earnFreeze();
   if(xp>0&&levelInfo(S.xp).lv>lvB)setTimeout(()=>{sfx('level');toast('レベル '+levelInfo(S.xp).lv+' に上がりました')},party?2600:400);
 }
 
@@ -764,7 +785,7 @@ const swatches=sel=>`<div class="swatches">${THEME_KEYS.map(k=>`<button type="bu
 
 /* ---------- views ---------- */
 let tab='home';
-const views={home:viewHome,goals:viewGoals,record:viewRecord,rewards:viewRewards};
+const views={home:viewHome,goals:viewGoals,record:viewRecord,tips:viewTips};
 let editMode=false;
 const COIN='<svg width="15" height="15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--gold)"/><circle cx="12" cy="12" r="5.5" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="2"/></svg>';
 const SNOW=(c,s)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/></svg>`;
@@ -782,8 +803,7 @@ function render(){
 function topBar(){
   return `<div class="col gut"><span class="brand">指針帳</span><span class="spacer"></span>
   ${S.pomo.running?`<button class="pill pomo num" data-act="openPomo" aria-label="タイマーを開く"><span data-pomo-time>${fmt(pomoRemain())}</span></button>`:''}
-  <span class="pill num" title="コイン">${COIN}${S.coins}</span>
-  <span class="pill num" title="おやすみ券">${SNOW('var(--ice)',14)}${S.freezes}</span>
+  <button class="pill num" data-act="freezeInfo" title="おやすみ券" aria-label="おやすみ券 ${S.freezes}枚">${SNOW('var(--ice)',14)}${S.freezes}</button>
   <button class="icon-btn" data-act="settings" aria-label="設定"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button></div>`;
 }
 function countdown(){const c=cp();if(!c.deadline)return '';
@@ -826,7 +846,7 @@ function mountainSVG(withTrail){
 }
 function heroHTML(){
   if(tab!=='home'){
-    const m={goals:'マップ',record:'記録',rewards:'ごほうび'}[tab];
+    const m={goals:'マップ',record:'記録',tips:'ヒント'}[tab];
     return `<span class="sun"></span>${tab==='goals'?pagerHTML():''}<h1 class="hero-t">${m}</h1>${tab==='goals'?`<p class="hero-sub">ゴール：${esc(cp().text)}</p>`:''}${mountainSVG(tab==='goals')}`;
   }
   const t=todayKey(), ds=dayStats(t), st=streak(), lit=kept(t), done=achieved(t);
@@ -991,11 +1011,11 @@ function viewSetup(){
   let body='';
   const nth=S.compasses.length;
   if(step===0) body=`<h1 class="setup-h">${nth?`${nth+1}つ目の<span class="duo">ゴール</span>は？`:'あなたの<span class="duo">ゴール</span>は？'}</h1><p class="setup-p">目指すことを、ひと言で。</p>
-    <div class="field"><input id="s1" value="${esc(draft.text)}" placeholder="例：月50万円を稼ぐ" aria-label="ゴール"></div>
+    <div class="field"><input id="s1" value="${esc(draft.text)}" placeholder="例：英語で日常会話ができるようになる" aria-label="ゴール"></div>
     ${swatches(draft.theme)}
     <details class="adv"><summary>理由・期限（任意）</summary>${fld('s2','なぜやるのか',draft.why,'textarea')}${fld('s3','期限',draft.deadline,'date')}</details>`;
   if(step===1) body=`<h1 class="setup-h"><span class="duo">チェックポイント</span>は？</h1><p class="setup-p">期限つきで、3つまで。あとでもOK。</p>
-    ${[0,1,2].map(i=>`<div class="goal-in"><input id="sg${i}" value="${esc(draft.goals[i]||'')}" placeholder="${['例：EC月商10万円','例：継続顧客を3社','例：実績ページ公開'][i]}" aria-label="チェックポイント ${i+1}"><input id="sd${i}" type="date" value="${esc((draft.gdue||[])[i]||'')}" aria-label="期限 ${i+1}"></div>`).join('')}`;
+    ${[0,1,2].map(i=>`<div class="goal-in"><input id="sg${i}" value="${esc(draft.goals[i]||'')}" placeholder="${['例：英検2級に合格','例：単語を2000語覚える','例：英語で10分話せる'][i]}" aria-label="チェックポイント ${i+1}"><input id="sd${i}" type="date" value="${esc((draft.gdue||[])[i]||'')}" aria-label="期限 ${i+1}"></div>`).join('')}`;
   if(step===2){const ss=[...new Set([...starterSuggestionsFor(draft.text),...draft.sextra])].slice(0,8), hs=[...new Set([...suggestionsFor(draft.text),...draft.extra])];
     body=`<h1 class="setup-h">毎日<span class="duo">やること</span></h1><p class="setup-p">タップで選ぶ。小さいほど続きます。</p>
     <p class="eyebrow" style="margin-top:4px">まず5分（すぐ終わること）</p>
@@ -1038,7 +1058,7 @@ const fmtNum=v=>{v=+v||0;const a=Math.abs(v);if(a>=1e8)return +(v/1e8).toFixed(2
 const goalPct=g=>Math.max(0,Math.min(1,((+g.cur||0)-(+g.base||0))/((+g.target)-(+g.base||0)||1)));
 const goalDone=g=>!!(g&&g.cleared);
 const numFields=g=>`<details class="adv" ${isNum(g)?'open':''}><summary>数字で追う（グラフ）</summary>
-  <div class="inl" style="margin-top:8px"><input id="gT" type="number" inputmode="decimal" placeholder="目標値 例：100000" value="${g.target||''}" aria-label="目標値"><input id="gU" placeholder="単位 例：円" value="${esc(g.unit||'')}" style="max-width:110px" aria-label="単位"></div>
+  <div class="inl" style="margin-top:8px"><input id="gT" type="number" inputmode="decimal" placeholder="目標値 例：2000" value="${g.target||''}" aria-label="目標値"><input id="gU" placeholder="単位 例：語" value="${esc(g.unit||'')}" style="max-width:110px" aria-label="単位"></div>
   <div class="inl" style="margin-top:8px"><input id="gB" type="number" inputmode="decimal" placeholder="スタート値 例：0" value="${g.base??''}" aria-label="スタート値"><input id="gC" type="number" inputmode="decimal" placeholder="現在値" value="${g.cur??''}" aria-label="現在値"></div>
 </details>`;
 function readNum(g){const T=parseFloat(v('gT'));if(!(T>0)){delete g.target;return}
@@ -1150,7 +1170,7 @@ function reviewHTML(){
   let body='';
   if(rvStep===0)body=`<p class="eyebrow">Weekly review 1/4</p><h1 class="setup-h">今週、<span class="duo">できたこと</span>。</h1>
     <div class="chips"><span><b>${W.kp}/7</b>記録した日</span><span><b>${W.ach}/7</b>クリアした日</span><span><b>${W.hb}</b>毎日やること</span><span><b>${W.pm}</b>集中（${W.pmMin}分）</span></div>
-    <div class="field"><label for="rw1">いちばん良かったこと（1行でOK）</label><textarea id="rw1" placeholder="例：火曜に商品ページを2本公開できた">${esc(rv.wins)}</textarea></div>`;
+    <div class="field"><label for="rw1">いちばん良かったこと（1行でOK）</label><textarea id="rw1" placeholder="例：火曜に過去問を1回分ときった">${esc(rv.wins)}</textarea></div>`;
   if(rvStep===1)body=`<p class="eyebrow">Weekly review 2/4</p><h1 class="setup-h">いちばんの<span class="duo">障害</span>は？</h1>
 
     <div class="field"><label for="rw2">今週の障害</label><textarea id="rw2" placeholder="例：残業の日は帰って何もできなかった">${esc(rv.obstacle)}</textarea></div>
@@ -1242,8 +1262,8 @@ const SUGG_META={
   '50〜90分ごとに5分休む':{ev:'中',slot:'day'},'週1回、体重とウエストを測る':{ev:'中',freq:1,slot:'morning'},'ゴールを声に出して読む':{ev:'体験談',slot:'morning'},
   '寝る前に今日の一歩を振り返る':{ev:'強',slot:'night'}};
 const FOUND_SUGG=['7時間以上寝る','週2回の筋トレ','有酸素運動を20分','朝、外の光を浴びる','今日の進み具合を1行記録する','寝る1時間前に画面を暗くする','50〜90分ごとに5分休む'];
-const evTag=t=>{const m=SUGG_META[t];return m&&m.ev?`<i class="ev ev-${m.ev}">${m.ev==='体験談'?'体験談':'根拠'+m.ev}</i>`:'';};
-const EV_NOTE='<p class="hint" style="margin:0;font-size:12px;color:var(--muted)">根拠強＝複数の比較試験で効果を確認　根拠中＝一定の研究あり　体験談＝実践者の報告</p>';
+const evTag=t=>'';
+const EV_NOTE='';
 function suggestions(){return suggestionsFor(cp().text)}
 function suggestionsFor(t){t=t||'';let out=['ゴールを声に出して読む'];
   SUGG.forEach(([re,list])=>{if(re.test(t))out=out.concat(list)});
@@ -1289,7 +1309,7 @@ function openAddSheet(type,keep){
   const hint={today:'今日だけやること。終わらなければ明日に持ち越します',daily:'毎日（または週◯回）くり返すこと',starter:'5分以内で終わる、動き出すきっかけ'}[type];
   openSheet('やることを追加',`<div class="seg">${types.map(([k,n])=>`<button type="button" data-act="addType" data-type="${k}" aria-pressed="${k===type}">${n}</button>`).join('')}</div>
     <p class="hint" style="margin:-6px 0 0;font-size:12px;color:var(--muted)">${hint}</p>
-    ${fld('a1','やること',keep||'','text',type==='today'?'例：見積書を送る':'')}
+    ${fld('a1','やること',keep||'','text',type==='today'?'例：本屋で問題集を買う':'')}
     ${sg.length?`<div class="sugg">${sg.map(t=>`<button type="button" data-act="fillTitle" data-f="a1" data-t="${esc(t)}">${esc(t)}${evTag(t)}</button>`).join('')}</div>`:''}
     ${type==='daily'?`<details class="adv"><summary>いつ・どれくらい</summary>${habitFields({title:'',cue:'',slot:'any',freq:7}).replace(/<div class="field"><label for="h1">[\s\S]*?<\/div>/,'')}</details>`:''}
     ${type==='starter'?`<details class="adv"><summary>前の晩の準備（任意）</summary>${fld('st2','前の晩にやっておくこと','','text')}</details>`:''}`,
@@ -1299,6 +1319,58 @@ function openAddSheet(type,keep){
       if(type==='starter')c.starters.push({id:uid(),title:t,prep:v('st2'),log:{}});
       sfx('pop');toast('追加しました');});
   const b=$('#sheetIn .btn.primary');if(b)b.textContent='追加する';
+}
+
+// おやすみ券: 7日続けるごとに1枚（最大3枚）。2日以上休んだときに自動で使い、連続記録を守る。
+function earnFreeze(){const st=streak(),t=todayKey();
+  if(st>0&&st%7===0&&S.freezeAt!==t&&S.freezes<3){S.freezes++;S.freezeAt=t;save();setTimeout(()=>{sfx('coin');toast('7日連続！ おやすみ券を1枚もらいました');},1200);}}
+
+/* ---------- tips ---------- */
+const TIPS=[
+ ['始める','「5分だけ」と決めて始める','始める前がいちばん重い。5分で区切ってOK。始めてしまえば、そのまま続くことが多い。',['addStarter','5分だけやる','まず5分に追加']],
+ ['始める','ハードルを笑えるほど下げる','「腕立て1回」「PCを開くだけ」でも立派な1歩。小さすぎるくらいがちょうどいい。'],
+ ['始める','やる時間と場所を決める','「朝コーヒーを淹れたら、単語を10個」のように、きっかけとセットにすると、迷わず動ける。'],
+ ['始める','今ある習慣にくっつける','歯みがきのあと、通勤電車に乗ったら…など、毎日すでにしていることの直後に置く。'],
+ ['始める','前の晩に準備しておく','道具を目に入る場所に出しておくだけで、翌朝の「めんどう」が減る。',['openTonight','','明日の準備をする']],
+ ['始める','誘惑を遠ざける','スマホは別の部屋へ。やらない理由を、気合いではなく環境で減らす。'],
+ ['続ける','2日続けて休まない','1日休んでも大丈夫。大事なのは、次の日に戻ってくること。'],
+ ['続ける','完璧より、続けること','7割できたら合格。0か100かで考えると、1回の失敗でやめたくなる。'],
+ ['続ける','記録をつける','チェックを付けて進み具合を見えるようにすると、目標を達成しやすくなることが分かっている。'],
+ ['続ける','習慣になるまで約2か月','「21日で身につく」は俗説。平均は2か月ほどで、人によってもっとかかる。焦らなくていい。'],
+ ['続ける','朝にやると根づきやすい','夜より朝のほうが習慣になりやすい傾向がある。迷ったら朝に置いてみる。'],
+ ['続ける','毎日同じ時間にやる','時間が決まると、だんだん考えなくてもできるようになる。'],
+ ['続ける','できたら小さく喜ぶ','チェックした瞬間に「よし」と言うだけでいい。気持ちよさが次の1回を呼ぶ。'],
+ ['続ける','調子の悪い日の「最低ライン」','「疲れた日は1行だけ」など、最低ラインを決めておくと、ゼロの日がなくなる。'],
+ ['目標','ゴールは具体的に','「がんばる」より「12月までに英検2級」。具体的で少し難しい目標ほど、成果が出やすい。'],
+ ['目標','期限を決める','期限があると、今日やるべき量が見えてくる。',['editCompass','','ゴールに期限を入れる']],
+ ['目標','ゴールを分ける','山頂まで一気には登れない。途中のチェックポイントを3つ決める。',['goMap','','チェックポイントを見る']],
+ ['目標','数字で追えるものは数字で','「単語 1200 / 2000語」のように数字が見えると、前に進んでいる実感がわく。'],
+ ['目標','「なぜやるか」を書いておく','やる気が落ちたときに戻ってこられる場所になる。'],
+ ['目標','結果より行動を目標にする','結果はコントロールしにくい。でも「毎日30分勉強する」は自分で決められる。'],
+ ['ピンチ','つまずきを先に想像する','理想だけを思い描くと、かえって努力が減ることがある。「〇〇になったら△△する」を決めておく。',['editPlan','','ピンチの行動を決める']],
+ ['ピンチ','やる気を待たない','やる気は、動いたあとに出てくる。まず5分だけやってみる。'],
+ ['ピンチ','途切れても責めない','自分を責めるほど再開しにくくなる。次の日にひとつやれば、それで十分。'],
+ ['ピンチ','目標を小さくするのは負けじゃない','続かないなら、小さくして続けたほうが確実に前へ進む。'],
+ ['ピンチ','週に1回ふりかえる','うまくいったこと・邪魔したことを3分で見直すだけで、来週が楽になる。',['openReview','','ふりかえる']],
+ ['ピンチ','人に宣言する','目標や記録を人に見せると、達成しやすくなる。'],
+ ['体と集中','7〜9時間眠る','寝不足は集中力もやる気も下げる。続けるための一番の土台。',['addHabit','7時間以上寝る','毎日やることに追加']],
+ ['体と集中','朝、外の光を浴びる','体内時計が整い、日中は元気に、夜は眠りやすくなる。',['addHabit','朝、外の光を浴びる','毎日やることに追加']],
+ ['体と集中','カフェインは夕方まで','寝る6〜8時間前のコーヒーでも、気づかないうちに睡眠が削られる。'],
+ ['体と集中','体を動かす','定期的な運動は、疲れにくさと気分をはっきり良くする。'],
+ ['体と集中','50〜90分ごとに休む','立つ・歩く・遠くを見る。短い休憩で元気が戻る。'],
+ ['体と集中','25分集中して5分休む','タイマーで区切ると、始めるハードルが下がる。',['openPomo','','25分やってみる']],
+ ['体と集中','通知を切る時間をつくる','集中が途切れるたびに、戻るまで時間がかかる。']
+];
+const TIP_CATS=['すべて','始める','続ける','目標','ピンチ','体と集中'];
+let tipCat='すべて';
+function tipBtn(t){if(!t[3])return '';const [act,arg,label]=t[3];return `<button class="mini" data-act="tipDo" data-a="${act}" data-arg="${esc(arg)}">${label} ›</button>`;}
+function viewTips(){
+  const d=new Date(),idx=(d.getFullYear()*372+d.getMonth()*31+d.getDate())%TIPS.length,today=TIPS[idx];
+  const list=TIPS.map((t,i)=>[t,i]).filter(([t])=>tipCat==='すべて'||t[0]===tipCat);
+  return `<div class="tip-hero"><p class="eyebrow">今日のヒント</p><h3>${today[1]}</h3><p>${today[2]}</p>${today[3]?`<button class="btn" data-act="tipDo" data-a="${today[3][0]}" data-arg="${esc(today[3][1])}">${today[3][2]}</button>`:''}</div>
+  <div class="frz-card">${SNOW('var(--ice)',30)}<div><b>${S.freezes}</b> 枚　<span style="font-weight:800">おやすみ券</span><p>2日以上休んだとき、自動で使って連続記録を守ります。7日続けるごとに1枚もらえます（最大3枚）。</p></div></div>
+  <div class="cats" role="tablist">${TIP_CATS.map(c=>`<button data-act="tipCat" data-c="${c}" aria-pressed="${c===tipCat}">${c}</button>`).join('')}</div>
+  <div class="tips">${list.map(([t,i])=>`<div class="tip"><span class="n">${i+1}</span><div><h4>${t[1]}</h4><p>${t[2]}</p>${tipBtn(t)}</div></div>`).join('')}</div>`;
 }
 
 /* ---------- actions ---------- */
@@ -1324,7 +1396,7 @@ const A={
   addOwnStarter(){const t=v('ss');if(!t)return;if(draft.starters.size>=MAX_STARTERS){toast('まず5分は最大'+MAX_STARTERS+'つまでです');return}draft.starters.add(t);draft.sextra.push(t);render();},
   pickHabit(el){const t=el.dataset.t;readSetup();draft.habits.has(t)?draft.habits.delete(t):draft.habits.add(t);render();},
   addOwnHabit(){readSetup();const t=v('sh');if(!t)return;draft.habits.add(t);draft.extra.push(t);render();setTimeout(()=>$('#sh')&&$('#sh').focus(),0);},
-  resetAll(){openSheet('最初からやり直す','<p class="note" style="margin:0">ゴール・目標・習慣・記録・コインをすべて消して、最初の設定に戻ります。念のため、先にバックアップを保存しておくと安心です。</p>',
+  resetAll(){openSheet('最初からやり直す','<p class="note" style="margin:0">ゴール・チェックポイント・やること・記録をすべて消して、最初の設定に戻ります。念のため、先にバックアップを保存しておくと安心です。</p>',
     null,()=>{const n=S.notify;S=fresh();S.notify=n;draft=null;step=0;tab='home';viewDay=null;history.replaceState(null,'','#home');});},
   toggleHabit(el){const h=find(cp().habits,el.dataset.id),t=tab==='home'?dk():todayKey();if(!h)return;
     if(h.log[t]){sfx('tick');commit(t,()=>{delete h.log[t]},-XP.habit);}else{sfx('pop');floatXP(el,XP.habit);commit(t,()=>{h.log[t]=1},XP.habit);}},
@@ -1345,6 +1417,13 @@ const A={
     save();render();sfx('pop');toast('「今日やること」に入れました',{label:'見に行く',fn:()=>{location.hash='#home';}});},
   clearGoal(el){const g=find(cp().goals,el.dataset.id);if(!g||g.cleared)return;const t=todayKey();sfx('fanfare');commit(t,()=>{g.cleared=t;g.clearedBy='manual';},XP.goal);cpCleared(g);},
   unclearGoal(el){const g=find(cp().goals,el.dataset.id);if(!g||!g.cleared)return;sfx('tick');commit(g.cleared,()=>{g.cleared=null;g.clearedBy=null;},-XP.goal);},
+  tipCat(el){tipCat=el.dataset.c;render();sfx('tick');},
+  tipDo(el){const a=el.dataset.a,arg=el.dataset.arg;
+    if(a==='addHabit'){if(!cp().habits.some(h=>h.title===arg)){cp().habits.push(newHabit(arg));save();}sfx('pop');toast('「'+arg+'」を毎日やることに追加しました');return}
+    if(a==='addStarter'){openAddSheet('starter','');return}
+    if(a==='goMap'){location.hash='#goals';return}
+    if(A[a])A[a](el);},
+  freezeInfo(){openSheet('おやすみ券',`<div class="frz-card">${SNOW('var(--ice)',30)}<div><b>${S.freezes}</b> 枚<p>1日休んでも連続記録は続きます。2日以上休んだときは、この券を自動で使って記録を守ります。7日続けるごとに1枚もらえます（最大3枚）。</p></div></div>`,null);},
   toggleEdit(){editMode=!editMode;render();sfx('tick');},
   fillTitle(el){const i=$('#'+el.dataset.f);if(i){i.value=el.dataset.t;}el.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===el));sfx('tick');},
   toYesterday(){viewDay=key(addDays(new Date(),-1));render();scrollTo(0,0);sfx('swipe');},
@@ -1367,11 +1446,11 @@ const A={
     else{const k=todayKey(),willC=!g.cleared&&g.tasks.filter(x=>!x.done).length===1;sfx('pop');floatXP(el,1);
       commit(k,()=>{t.done=true;t.doneAt=k;linked.forEach(x=>{x.done=true;x.doneAt=k;});if(willC){g.cleared=k;g.clearedBy='tasks';}},XP.task+(willC?XP.goal:0));
       if(willC)cpCleared(g);}},
-  addGoal(){if(cp().goals.length>=MAX_GOALS){toast('チェックポイントは最大'+MAX_GOALS+'個までです');return}openSheet('チェックポイントを追加',fld('g1','チェックポイント',''  ,'text','例：EC月商10万円')+fld('g2','期限','','date')+numFields({}),
+  addGoal(){if(cp().goals.length>=MAX_GOALS){toast('チェックポイントは最大'+MAX_GOALS+'個までです');return}openSheet('チェックポイントを追加',fld('g1','チェックポイント',''  ,'text','例：英検2級に合格')+fld('g2','期限','','date')+numFields({}),
     ()=>{if(!v('g1'))return false;const g={id:uid(),title:v('g1'),due:v('g2'),tasks:[],hist:[],created:todayKey()};readNum(g);cp().goals.push(g);});},
   editGoal(el){const g=find(cp().goals,el.dataset.id);openSheet('チェックポイントを編集',fld('g1','チェックポイント',g.title)+fld('g2','期限',g.due||'','date')+numFields(g),
     ()=>{if(!v('g1'))return false;g.title=v('g1');g.due=v('g2');readNum(g);},()=>{cp().goals=cp().goals.filter(x=>x!==g);});},
-  addTask(el){const g=find(cp().goals,el.dataset.g);openSheet('やることを追加',fld('t1','「'+esc(g.title)+'」のためにやること','','text','例：商品ページを1本つくる'),
+  addTask(el){const g=find(cp().goals,el.dataset.g);openSheet('やることを追加',fld('t1','「'+esc(g.title)+'」のためにやること','','text','例：過去問を1回分とく'),
     ()=>{if(!v('t1'))return false;g.tasks.push({id:uid(),title:v('t1'),done:false});if(g.cleared&&g.clearedBy==='tasks'){g.cleared=null;}});},
   editTask(el){const g=find(cp().goals,el.dataset.g),t=find(g.tasks,el.dataset.id);openSheet('やることを編集',fld('t1','やること',t.title),
     ()=>{if(!v('t1'))return false;t.title=v('t1');},()=>{g.tasks=g.tasks.filter(x=>x!==t);});},
@@ -1547,9 +1626,9 @@ function playIntro(){
 let tt,toastFn=null;function toast(m,act){const t=$('#toast');toastFn=act?act.fn:null;t.innerHTML=esc(m)+(act?`<button type="button" data-act="toastAct">${esc(act.label)}</button>`:'');t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>{t.hidden=true;toastFn=null;},act?6500:2600);}
 function celebrate(st,badge,grew){
   const c=$('#cele');
-  c.innerHTML=`<div class="card"><p class="eyebrow" style="color:var(--ink-muted)">${grew?'Streak extended':'Daily goal'}</p>
+  c.innerHTML=`<div class="card"><p class="eyebrow">${grew?'連続記録':'今日のノルマ'}</p>
   <div class="big duo">${st}</div><h3>${grew?'日連続、更新！':'今日のノルマ、クリア！'}</h3>
-  <p>「${esc(cp().text)}」に、また一歩。<br>ボーナス <b>+${DAY_BONUS} コイン</b>${badge?`<br><b>${badge}日連続トロフィーを獲得（+${badge} コイン）</b>`:''}</p>
+  <p>「${esc(cp().text)}」に、また一歩。</p>
   <button class="btn primary" style="flex:none;width:100%;margin-top:8px" data-act="closeCele">続ける</button></div>`;
   c.hidden=false; burst();
 }
@@ -1680,7 +1759,7 @@ Object.assign(A,{
   skipMood(){S.mood[todayKey()]={skip:1};save();render();},
   graduate(el){const c=cp(),h=find(c.habits,el.dataset.id);if(!h)return;const snap=JSON.stringify(S);
     c.grad.push({id:h.id,title:h.title,at:todayKey(),total:Object.keys(h.log).length,log:h.log});c.habits=c.habits.filter(x=>x!==h);S.coins+=30;S.badges['g'+h.id]=todayKey();
-    save();render();sfx('fanfare');burst();toast('「'+h.title+'」が身につきました。+30 コイン',{label:'元に戻す',fn:()=>{S=JSON.parse(snap);normalize();save();render();}});},
+    save();render();sfx('fanfare');burst();toast('「'+h.title+'」をマスター！',{label:'元に戻す',fn:()=>{S=JSON.parse(snap);normalize();save();render();}});},
   updateGoalVal(el){const g=find(cp().goals,el.dataset.id);if(!g)return;
     openSheet('今の数字',`<div class="field"><label for="gvNow">${esc(g.title)}（目標 ${fmtNum(g.target)}${esc(g.unit||'')}）</label><input id="gvNow" type="number" inputmode="decimal" value="${g.cur??''}"></div>`,
     ()=>{const n=parseFloat(v('gvNow'));if(isNaN(n))return false;g.cur=n;setHist(g,n);
@@ -1709,7 +1788,7 @@ function switchCompass(i,dir){
 }
 (function(){
   let x0=0,y0=0,dx=0,mode=null;
-  const blocked=t=>!S.setup||adding||tab==='rewards'||!$('#sheet').hidden||!$('#cele').hidden||!$('#splash').hidden||!$('#pomo').hidden||!$('#rv').hidden||t.closest('input,textarea,select,.sheet,nav');
+  const blocked=t=>!S.setup||adding||tab==='tips'||!$('#sheet').hidden||!$('#cele').hidden||!$('#splash').hidden||!$('#pomo').hidden||!$('#rv').hidden||t.closest('input,textarea,select,.sheet,nav');
   addEventListener('touchstart',e=>{if(e.touches.length!==1||blocked(e.target)){mode='off';return}x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;mode=null;},{passive:true});
   addEventListener('touchmove',e=>{if(mode==='off'||switching)return;const x=e.touches[0].clientX-x0,y=e.touches[0].clientY-y0;
     if(!mode){if(Math.abs(x)>10&&Math.abs(x)>Math.abs(y)*1.4)mode='h';else if(Math.abs(y)>10)mode='v';}
@@ -1733,7 +1812,7 @@ document.querySelectorAll('nav.tabs a').forEach(a=>{
 setTimeout(()=>{const w=document.querySelector('.wrap');if(w)w.classList.remove('boot');},1200);
 
 /* ---------- routing ---------- */
-function route(){let h=location.hash.slice(1);if(h==='habits'){editMode=true;h='home';history.replaceState(null,'','#home');}tab=views[h]?h:'home';if(tab!=='home')editMode=false;render();scrollTo(0,0);}
+function route(){let h=location.hash.slice(1);if(h==='rewards'){h='tips';history.replaceState(null,'','#tips');}if(h==='habits'){editMode=true;h='home';history.replaceState(null,'','#home');}tab=views[h]?h:'home';if(tab!=='home')editMode=false;render();scrollTo(0,0);}
 addEventListener('hashchange',route);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(viewDay&&viewDay!==key(addDays(new Date(),-1)))viewDay=null;applyFreezes();render();if(S.setup&&S.fx.splash&&S.lastSplash!==todayKey()){S.lastSplash=todayKey();save();showSplash();}}});
 setInterval(()=>{if(S.setup&&!adding)applyTheme();},60000);
