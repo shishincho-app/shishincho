@@ -1572,5 +1572,7 @@ if(S.setup&&S.fx.splash&&S.lastSplash!==todayKey()){S.lastSplash=todayKey();save
 })();
 </script>
 
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}</script>
+<script>if('serviceWorker' in navigator){var hadSW=!!navigator.serviceWorker.controller,reloaded=false;
+navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){r.update();document.addEventListener('visibilitychange',function(){if(!document.hidden)r.update();});}).catch(function(){});
+navigator.serviceWorker.addEventListener('controllerchange',function(){if(hadSW&&!reloaded){reloaded=true;location.reload();}});}</script>
 </body></html>

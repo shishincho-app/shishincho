@@ -16,12 +16,17 @@ head = """<!doctype html>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
 """
 tail = """
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}</script>
+<script>if('serviceWorker' in navigator){var hadSW=!!navigator.serviceWorker.controller,reloaded=false;
+navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){r.update();document.addEventListener('visibilitychange',function(){if(!document.hidden)r.update();});}).catch(function(){});
+navigator.serviceWorker.addEventListener('controllerchange',function(){if(hadSW&&!reloaded){reloaded=true;location.reload();}});}</script>
 </body></html>
 """
 # put <title>/<link>/<style> in head, rest in body
 split = body.index('<header id="bar"')
 (dist / "index.html").write_text(head + body[:split] + "</head><body>\n" + body[split:] + tail, encoding="utf-8")
-for f in ["sw.js", "manifest.webmanifest", "icon-192.png", "icon-512.png"]:
+import hashlib
+ver = hashlib.sha1((dist / "index.html").read_bytes()).hexdigest()[:10]  # new version string on every change
+(dist / "sw.js").write_text((src / "sw.js").read_text(encoding="utf-8").replace("__BUILD__", ver), encoding="utf-8")
+for f in ["manifest.webmanifest", "icon-192.png", "icon-512.png"]:
     shutil.copy(src / f, dist / f)
 print("built", dist)
