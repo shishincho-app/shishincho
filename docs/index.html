@@ -639,6 +639,31 @@ body.setup .setup-wrap{background:none}
 .frz-card{display:flex;gap:14px;align-items:center;padding:16px;border-radius:20px;background:color-mix(in srgb,var(--ice) 14%,var(--card));box-shadow:var(--shadow)}
 .frz-card b{font-family:var(--f-disp);font-size:26px}
 .frz-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+
+/* gap card: target vs now */
+.gap{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:18px;background:var(--soft)}
+.gap-top{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.gap-top .lbl{font-size:12px;font-weight:800;color:var(--muted)}
+.gap-top b{font-family:var(--f-disp);font-size:30px;font-weight:800;line-height:1;color:var(--primary)}
+.gap-top .of{font-weight:700;color:var(--muted)}
+.gst{margin-left:auto;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;color:#fff;background:var(--muted)}
+.gst.ok{background:#12B76A}.gst.mid{background:#F79009}.gst.low{background:#F04438}.gst.go{background:var(--primary)}
+.gbar{position:relative;margin-bottom:14px;height:16px;border-radius:99px;background:var(--card);box-shadow:inset 0 0 0 2px var(--line)}
+.gbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--calm),var(--violet),var(--alert));min-width:16px}
+.gbar em{position:absolute;top:-6px;bottom:-6px;width:3px;margin-left:-1.5px;background:var(--fg);border-radius:2px}
+.gbar em span{position:absolute;top:auto;bottom:-18px;left:50%;transform:translateX(-50%);font-style:normal;font-size:10px;font-weight:800;color:var(--fg);white-space:nowrap}
+.gap-tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
+.gap-tiles div{background:var(--card);border-radius:14px;padding:10px 12px;display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.gap-tiles small{width:100%;font-size:11px;font-weight:800;color:var(--muted)}
+.gap-tiles b{font-family:var(--f-disp);font-size:22px;font-weight:800;line-height:1.1}
+.gap-tiles span{font-size:12px;font-weight:700;color:var(--muted)}
+.gap-tiles .hl{background:color-mix(in srgb,var(--primary) 10%,var(--card))}
+.gap-tiles .hl b{color:var(--primary)}
+.gap-note{margin:0;font-size:13px;line-height:1.7}
+.gap-note b{color:var(--primary)}
+.pm-custom{display:flex;gap:8px;align-items:center;width:100%}
+.pm-custom input{flex:1;min-width:0;font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:2px solid rgba(255,255,255,.4);background:rgba(255,255,255,.2);color:#fff;text-align:center}
+.pm-custom span{font-size:13px;font-weight:700}
 </style>
 
 </head><body>
@@ -713,7 +738,7 @@ function normalize(){
   if(S.pomo.brkNow===undefined)S.pomo.brkNow=0;
   S.base=S.base||{wake:'06:30',sleep:'23:00',set:false}; S.baseLog=S.baseLog||{}; S.reviews=S.reviews||[]; S.mit=S.mit||{};
   S.prep=S.prep||{}; S.mood=S.mood||{}; if(S.moodOn===undefined)S.moodOn=false; if(S.bodyOn===undefined)S.bodyOn=false; S.body=S.body||[];
-  S.compasses.forEach(c=>{c.todos=c.todos||[];c.goals.forEach(g=>{if(g.cleared===undefined){g.cleared=((g.target>0&&(+g.cur||0)>=+g.target)||(g.tasks&&g.tasks.length&&g.tasks.every(t=>t.done)))?(g.doneAt||todayKey()):null;}});});
+  S.compasses.forEach(c=>{c.todos=c.todos||[];if(c.target>0&&!c.kind)c.kind='total';c.goals.forEach(g=>{if(g.target>0&&!g.kind)g.kind='total';});c.goals.forEach(g=>{if(g.cleared===undefined){g.cleared=((g.target>0&&(+g.cur||0)>=+g.target)||(g.tasks&&g.tasks.length&&g.tasks.every(t=>t.done)))?(g.doneAt||todayKey()):null;}});});
   S.compasses.forEach(c=>{c.created=c.created||S.since||todayKey();c.obstacle=c.obstacle||'';c.plan=c.plan||'';c.grad=c.grad||[];c.habits.forEach(h=>{h.auto=h.auto||[];});
     c.starters.forEach(x=>{x.prep=x.prep||'';});c.goals.forEach(g=>{g.hist=g.hist||[];g.created=g.created||S.since||todayKey();});});
 }
@@ -895,6 +920,7 @@ function viewHome(){
   const total=rows.length, done=rows.filter(r=>r.includes('aria-pressed="true"')).length;
   const yd=key(addDays(new Date(),-1)), [, ym, ydd]=yd.split('-').map(Number);
   return `${y?'':climbCard()}
+  ${y||!isNum(c)?'':`<section class="panel">${head('','ゴールの数字')}${gapCard(c,'updateCompassVal','')}</section>`}
   ${y?'':reviewBanner()+backupBanner()}
   ${y?'':moodHTML()}
   <section class="panel ${editMode?'edit-on':''}"><div class="today-h"><h2>${y?`昨日（${ym}/${ydd}）`:'今日やること'}</h2><span class="num">${done}/${total}</span><button class="link" data-act="toggleEdit">${editMode?'完了':'編集'}</button></div>
@@ -976,18 +1002,18 @@ function viewGoals(){
   const c=cp();
   const cards=c.goals.map(g=>{const n=g.tasks.length,dn=g.tasks.filter(t=>t.done).length,num=isNum(g),done=goalDone(g);
     const p=done?1:num?goalPct(g):(n?dn/n:0), [st,stc]=cpStatus(g);
-    const prog=num?`<b>${fmtNum(g.cur)}</b> / ${fmtNum(g.target)}${esc(g.unit||'')}${!done?`<span class="muted">　あと${fmtNum(Math.max(0,g.target-(g.cur||0)))}${esc(g.unit||'')}</span>`:''}`
+    const prog=num?`<b>${nfmt(numNow(g))}</b> / ${nfmt(g.target)}${esc(g.unit||'')}${g.kind==='month'?'<span class="muted">（今月）</span>':''}`
       :n?`やること <b>${dn}</b> / ${n}`:'<span class="muted">やることを決めよう</span>';
     const nextT=g.tasks.find(t=>!t.done), inToday=t=>c.todos.some(x=>x.ref===`${g.id}|${t.id}`&&!x.done);
     const next=done?`<p class="cp-done">🎉 ${g.cleared?jpDate(g.cleared)+'に':''}クリアしました</p>`
-      :num?`<button class="btn primary cp-act" data-act="updateGoalVal" data-id="${g.id}">今の数字を記録する</button>`
+      :num?gapCard(g,'updateGoalVal',g.id)
       :nextT?`<div class="cp-next"><span>次にやること</span><b>${esc(nextT.title)}</b>${inToday(nextT)?'<em>今日やるリストに入っています</em>':`<button class="btn primary cp-act" data-act="taskToToday" data-g="${g.id}" data-id="${nextT.id}">今日やるリストに入れる</button>`}</div>`
       :`<button class="btn primary cp-act" data-act="addTask" data-g="${g.id}">やることを決める</button>`;
     return `<article class="cp ${done?'done':''}"><div class="cp-h"><span class="cp-st ${stc}">${st}</span><span class="spacer"></span>${g.due?`<span class="cp-due">${jpDate(g.due)}まで${!done&&daysLeft(g.due)>=0?`・あと${daysLeft(g.due)}日`:''}</span>`:''}<button class="more" data-act="editGoal" data-id="${g.id}" aria-label="チェックポイントを編集">${DOTS}</button></div>
       <h3>${esc(g.title)}</h3>
-      <div class="cp-prog"><span>${prog}</span><span class="pct">${Math.round(p*100)}%</span></div>
-      <div class="abar"><i style="width:${p*100}%"></i></div>
-      ${num&&g.hist&&g.hist.length?goalChart(g):''}
+      ${num&&!done?'':`<div class="cp-prog"><span>${prog}</span><span class="pct">${Math.round(p*100)}%</span></div>
+      <div class="abar"><i style="width:${p*100}%"></i></div>`}
+      ${num&&g.kind!=='month'&&g.hist&&g.hist.length>1?goalChart(g):''}
       ${next}
       ${n?`<div class="list flat">${g.tasks.map(t=>`<div class="item tap ${t.done?'done':''}" data-act="toggleTask" data-g="${g.id}" data-id="${t.id}" role="button" tabindex="0" aria-pressed="${t.done}"><span class="check">${CHECK}</span><span class="t"><span>${esc(t.title)}</span></span>${!t.done&&!inToday(t)?`<button class="mini" data-act="taskToToday" data-g="${g.id}" data-id="${t.id}">今日やる</button>`:''}<button class="more" data-act="editTask" data-g="${g.id}" data-id="${t.id}" aria-label="編集">${DOTS}</button></div>`).join('')}
         <div class="item"><button class="add-task" data-act="addTask" data-g="${g.id}">＋ やること</button></div></div>`:''}
@@ -1066,15 +1092,46 @@ function viewRewards(){
 /* ---------- numeric milestones ---------- */
 const isNum=g=>g&&g.target>0;
 const fmtNum=v=>{v=+v||0;const a=Math.abs(v);if(a>=1e8)return +(v/1e8).toFixed(2)+'億';if(a>=1e4)return +(v/1e4).toFixed(1)+'万';return +v.toFixed(2)+'';};
-const goalPct=g=>Math.max(0,Math.min(1,((+g.cur||0)-(+g.base||0))/((+g.target)-(+g.base||0)||1)));
+const goalPct=g=>g.kind==='month'?Math.min(1,numNow(g)/(+g.target||1)):Math.max(0,Math.min(1,((+g.cur||0)-(+g.base||0))/((+g.target)-(+g.base||0)||1)));
 const goalDone=g=>!!(g&&g.cleared);
-const numFields=g=>`<details class="adv" ${isNum(g)?'open':''}><summary>数字で追う（グラフ）</summary>
-  <div class="inl" style="margin-top:8px"><input id="gT" type="number" inputmode="decimal" placeholder="目標値 例：2000" value="${g.target||''}" aria-label="目標値"><input id="gU" placeholder="単位 例：語" value="${esc(g.unit||'')}" style="max-width:110px" aria-label="単位"></div>
-  <div class="inl" style="margin-top:8px"><input id="gB" type="number" inputmode="decimal" placeholder="スタート値 例：0" value="${g.base??''}" aria-label="スタート値"><input id="gC" type="number" inputmode="decimal" placeholder="現在値" value="${g.cur??''}" aria-label="現在値"></div>
+const numFields=g=>`<details class="adv" ${isNum(g)?'open':''}><summary>数字で追う（ペースと差が見える）</summary>
+  <div class="seg" id="gK" style="margin-top:8px">${[['total','ためていく数字'],['month','毎月の数字']].map(([k,n])=>`<button type="button" data-act="segPick" data-v="${k}" aria-pressed="${(g.kind||'total')===k}">${n}</button>`).join('')}</div>
+  <p class="hint" style="margin:6px 0 0;font-size:12px;color:var(--muted)">ためていく＝単語2000語・貯金100万円など／毎月＝月収50万円・月10冊など</p>
+  <div class="inl" style="margin-top:8px"><input id="gT" type="number" inputmode="decimal" placeholder="目標の数字 例：2000" value="${g.target||''}" aria-label="目標の数字"><input id="gU" placeholder="単位 例：語" value="${esc(g.unit||'')}" style="max-width:110px" aria-label="単位"></div>
+  <div class="inl" style="margin-top:8px"><input id="gC" type="number" inputmode="decimal" placeholder="今の数字（毎月なら今月の分）" value="${g.target?numNow(g):''}" aria-label="今の数字"></div>
 </details>`;
 function readNum(g){const T=parseFloat(v('gT'));if(!(T>0)){delete g.target;return}
-  g.target=T;g.unit=v('gU');g.base=parseFloat(v('gB'))||0;const c=parseFloat(v('gC'));
-  if(!isNaN(c)&&c!==g.cur){g.cur=c;setHist(g,c);} if(g.cur===undefined)g.cur=g.base;}
+  g.target=T;g.unit=v('gU');g.kind=segVal('gK')||g.kind||'total';g.base=g.base||0;const c=parseFloat(v('gC'));
+  if(!isNaN(c)&&c!==numNow(g))numSet(g,c); if(g.cur===undefined)g.cur=g.base;}
+// ---- numbers: "total" grows toward a target (words, savings); "month" resets each month (monthly income) ----
+const ym=k=>k.slice(0,7);
+function numNow(o){if(o.kind==='month'){const m=ym(todayKey());return (o.adds||[]).filter(a=>ym(a[0])===m).reduce((s,a)=>s+(+a[1]||0),0);}return +o.cur||0;}
+function numLastMonth(o){const d=new Date();d.setDate(0);const m=key(d).slice(0,7);return (o.adds||[]).filter(a=>ym(a[0])===m).reduce((s,a)=>s+(+a[1]||0),0);}
+function numSet(o,val){const t=todayKey();if(o.kind==='month'){const m=ym(t);o.adds=(o.adds||[]).filter(a=>ym(a[0])!==m);o.adds.push([t,val]);}else{o.cur=val;setHist(o,val);}}
+function numAdd(o,amt){const t=todayKey();if(o.kind==='month'){o.adds=o.adds||[];o.adds.push([t,amt]);}else{o.cur=(+o.cur||0)+amt;setHist(o,o.cur);}}
+const nfmt=v=>{v=+v||0;const a=Math.abs(v);if(a>=1e4)return fmtNum(v);return a>=100?Math.round(v).toLocaleString():(+v.toFixed(1)).toLocaleString();};
+function numGap(o){
+  const t=todayKey(),now=numNow(o),target=+o.target,rem=Math.max(0,target-now);
+  if(o.kind==='month'){const d=new Date(),dim=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(),el=d.getDate(),left=dim-el+1;
+    const pace=now/el,proj=pace*dim;
+    return {now,target,rem,left,leftLbl:'今月の残り',perDay:rem/left,perWeek:rem/left*7,pace,proj,projLbl:`このままだと月末に <b>${nfmt(proj)}</b>${esc(o.unit||'')}（目標の${Math.round(proj/target*100)}%）`,ideal:el/dim,frac:Math.min(1,now/target),last:numLastMonth(o),done:now>=target};}
+  const due=o.due||o.deadline, start=o.created||S.since||t, left=due?Math.max(1,daysBetween(t,due)):null;
+  const h=(o.hist||[]).filter(x=>daysBetween(x[0],t)<=30), v0=h.length?+h[0][1]:(+o.base||0), d0=h.length?h[0][0]:start, span=Math.max(1,daysBetween(d0,t));
+  const pace=(now-v0)/span, eta=pace>0?addDays(new Date(),Math.ceil(rem/pace)):null;
+  return {now,target,rem,left,leftLbl:'期限まで',perDay:left?rem/left:null,perWeek:left?rem/left*7:null,pace,
+    projLbl:rem<=0?'目標に届きました！':eta?`このペースなら <b>${jpMD(eta)}</b> に到達${due&&key(eta)>due?'（期限に間に合わない）':''}`:'まだペースが出ていません。最初の記録をつけよう',
+    ideal:due?Math.max(0,Math.min(1,daysBetween(start,t)/Math.max(1,daysBetween(start,due)))):null,frac:Math.max(0,Math.min(1,(now-(+o.base||0))/((target-(+o.base||0))||1))),done:now>=target};
+}
+function gapCard(o,act,id){
+  const G=numGap(o),u=esc(o.unit||''),need=G.perDay;
+  const ratio=need?G.pace/need:(G.pace>0?1:0), st=G.done?['達成！','ok']:need==null?['記録中','go']:ratio>=1?['順調','ok']:ratio>=.7?['あと少し','mid']:['ペースUP','low'];
+  return `<div class="gap"><div class="gap-top"><span class="lbl">${o.kind==='month'?'今月':'いま'}</span><b>${nfmt(G.now)}</b><span class="of">/ ${nfmt(G.target)}${u}</span><span class="gst ${st[1]}">${st[0]}</span></div>
+  <div class="gbar"><i style="width:${G.frac*100}%"></i>${G.ideal!=null&&!G.done?`<em style="left:${G.ideal*100}%"><span>今日の目安</span></em>`:''}</div>
+  <div class="gap-tiles"><div><small>あと</small><b>${nfmt(G.rem)}</b><span>${u}</span></div><div><small>${G.leftLbl}</small><b>${G.left??'—'}</b><span>日</span></div>
+   <div class="hl"><small>1日あたり必要</small><b>${need!=null?nfmt(need):'—'}</b><span>${u}</span></div><div class="hl"><small>1週あたり必要</small><b>${G.perWeek!=null?nfmt(G.perWeek):'—'}</b><span>${u}</span></div></div>
+  <p class="gap-note">今のペース：1日 <b>${nfmt(G.pace)}</b>${u}${need!=null&&!G.done?`（必要なペースの${Math.round(ratio*100)}%）`:''}<br>${G.projLbl}${o.kind==='month'&&G.last?`<br>先月：${nfmt(G.last)}${u}`:''}</p>
+  <button class="btn primary cp-act" data-act="${act}" data-id="${id}">＋ 数字を記録する</button></div>`;
+}
 function setHist(g,val){const t=todayKey();g.hist=(g.hist||[]).filter(h=>h[0]!==t);g.hist.push([t,val]);g.hist.sort((a,b)=>a[0]<b[0]?-1:1);}
 function goalChart(g){
   const W=320,H=120,pl=6,pr=6,pt=12,pb=18, start=g.created||S.since||todayKey(), end=g.due||key(addDays(new Date(),30));
@@ -1384,12 +1441,21 @@ function viewTips(){
   <div class="tips">${list.map(([t,i])=>`<div class="tip"><span class="n">${i+1}</span><div><h4>${t[1]}</h4><p>${t[2]}</p>${tipBtn(t)}</div></div>`).join('')}</div>`;
 }
 
+function numSheet(o,after){const u=esc(o.unit||''),mon=o.kind==='month';
+  openSheet('数字を記録',`<p style="margin:0;font-weight:800">${esc(o.title||o.text)}</p>
+    <div class="seg" id="nMode">${(mon?[['add','今日の分を足す'],['set','今月の合計を入力']]:[['set','今の数字を入力'],['add','増えた分を足す']]).map(([k,n],i)=>`<button type="button" data-act="segPick" data-v="${k}" aria-pressed="${i===0}">${n}</button>`).join('')}</div>
+    <div class="inl"><input id="nVal" type="number" inputmode="decimal" placeholder="${mon?'例：12000':'今の数字'}" aria-label="数字"><b>${u}</b></div>
+    <p class="hint" style="margin:0;font-size:12px;color:var(--muted)">${mon?`今月の合計：${nfmt(numNow(o))}${u}`:`今：${nfmt(numNow(o))}${u}`}</p>`,
+    ()=>{const n=parseFloat(v('nVal'));if(isNaN(n))return false;if(segVal('nMode')==='add')numAdd(o,n);else numSet(o,n);sfx('pop');after&&after();});
+  const b=$('#sheetIn .btn.primary');if(b)b.textContent='記録する';
+}
+
 /* ---------- actions ---------- */
 const find=(arr,id)=>arr.find(x=>x.id===id);
 const A={
   editCompass(){const c=cp();sheetTheme=c.theme;
-    openSheet('ゴールを編集',fld('c1','ゴール',c.text,'text')+`<div class="field"><label>色</label>${swatches(c.theme)}</div>`+`<details class="adv"><summary>理由・期限・ピンチ対策</summary>`+fld('c2','なぜやるのか',c.why,'textarea')+fld('c3','期限',c.deadline||'','date')+fld('c4','ピンチになりそうなこと',c.obstacle,'text')+fld('c5','そのときの行動',c.plan,'text')+`</details>`,
-    ()=>{if(!v('c1')){toast('ゴールを入力してください');return false}c.text=v('c1');c.why=v('c2');c.deadline=v('c3');c.obstacle=v('c4');c.plan=v('c5');c.theme=sheetTheme;},
+    openSheet('ゴールを編集',fld('c1','ゴール',c.text,'text')+`<div class="field"><label>色</label>${swatches(c.theme)}</div>`+numFields(c)+`<details class="adv"><summary>理由・期限・ピンチ対策</summary>`+fld('c2','なぜやるのか',c.why,'textarea')+fld('c3','期限',c.deadline||'','date')+fld('c4','ピンチになりそうなこと',c.obstacle,'text')+fld('c5','そのときの行動',c.plan,'text')+`</details>`,
+    ()=>{if(!v('c1')){toast('ゴールを入力してください');return false}c.text=v('c1');c.why=v('c2');c.deadline=v('c3');c.obstacle=v('c4');c.plan=v('c5');c.theme=sheetTheme;readNum(c);},
     S.compasses.length>1?()=>{S.compasses.splice(S.cur,1);S.cur=0;}:null);},
   pickTheme(el){const k=el.dataset.k;if(adding||!S.setup){readSetup();draft.theme=k;}else sheetTheme=k;
     el.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===el));applyTheme(k);sfx('pop');},
@@ -1412,8 +1478,9 @@ const A={
   toggleHabit(el){const h=find(cp().habits,el.dataset.id),t=tab==='home'?dk():todayKey();if(!h)return;
     if(h.log[t]){sfx('tick');commit(t,()=>{delete h.log[t]},-XP.habit);}else{sfx('pop');floatXP(el,XP.habit);commit(t,()=>{h.log[t]=1},XP.habit);}},
   toggleStarter(el){const x=find(cp().starters,el.dataset.id),t=tab==='home'?dk():todayKey();if(!x)return;
+    if(/タイマー/.test(x.title)&&!x.log[t]&&!viewDay){const P=S.pomo;P.work=5;P.brk=1;P.custom=false;P.brkNow=0;P.mode='work';P.left=0;P.running=false;}
     if(x.log[t]){sfx('tick');commit(t,()=>{delete x.log[t]},-XP.starter);}
-    else{const first=!dayStats(t).st&&!dayStats(t).hb;sfx('pop');floatXP(el,XP.starter);commit(t,()=>{x.log[t]=1},XP.starter);if(first&&!viewDay)setTimeout(()=>toast('動き出せた！'),250);}},
+    else{const first=!dayStats(t).st&&!dayStats(t).hb;sfx('pop');floatXP(el,XP.starter);commit(t,()=>{x.log[t]=1},XP.starter);if(/タイマー/.test(x.title)&&!viewDay){A.openPomo();return}if(first&&!viewDay)setTimeout(()=>toast('動き出せた！'),250);}},
   addItem(el){openAddSheet(el&&el.dataset&&el.dataset.type||'today');},
   addType(el){openAddSheet(el.dataset.type,v('a1'));},
   toggleTodo(el){const c=cp(),x=find(c.todos,el.dataset.id);if(!x)return;const t=todayKey();
@@ -1701,7 +1768,8 @@ function pomoHTML(){
     <button class="pm-sub" data-act="pomoSkip" aria-label="スキップ"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5v14l9-7zM15 5h3v14h-3z"/></svg></button></div>
   <div class="pm-dots" aria-label="ラウンド">${[0,1,2,3].map(i=>`<i class="${i<P.round%4?'on':''}"></i>`).join('')}</div>
   <div class="pm-field"><label for="pmFocus">集中すること</label><select id="pmFocus" data-pomo-focus><option value="">（自由に集中する）</option>${Object.entries(groups).map(([g,ts])=>`<optgroup label="${esc(g)}">${ts.map(t=>`<option ${P.focus===t?'selected':''}>${esc(t)}</option>`).join('')}</optgroup>`).join('')}</select></div>
-  <div class="pm-field"><label>時間</label><div class="seg">${[[25,5],[50,10],[15,3]].map(([w,b])=>`<button type="button" data-act="pomoPreset" data-w="${w}" data-b="${b}" aria-pressed="${P.work===w&&P.brk===b}">${w}分 / ${b}分</button>`).join('')}</div></div>
+  <div class="pm-field"><label>時間（集中 / 休憩）</label><div class="seg">${[[5,1],[15,3],[25,5],[50,10]].map(([w,b])=>`<button type="button" data-act="pomoPreset" data-w="${w}" data-b="${b}" aria-pressed="${P.work===w&&P.brk===b&&!P.custom}">${w}分</button>`).join('')}<button type="button" data-act="pomoCustom" aria-pressed="${!!P.custom}">自由</button></div>
+  ${P.custom?`<div class="pm-custom"><input id="pmW" type="number" inputmode="numeric" min="1" max="180" value="${P.work}" aria-label="集中の分数"><span>分集中</span><input id="pmB" type="number" inputmode="numeric" min="0" max="60" value="${P.brk}" aria-label="休憩の分数"><span>分休憩</span><button type="button" class="btn" data-act="pomoSetCustom" style="flex:none;background:#fff;color:var(--primary)">OK</button></div>`:''}</div>
   <p class="pm-stat">今日の集中 <b>${today.n}</b>回 · <b>${today.min}</b>分　/　1回完了で <b>+${XP.pomo} XP</b></p></div>`;
 }
 function renderPomo(){const el=$('#pomo');if(el.hidden)return;el.classList.toggle('brk',S.pomo.mode==='brk');el.innerHTML=pomoHTML();}
@@ -1733,7 +1801,9 @@ Object.assign(A,{
   pomoReset(){const P=S.pomo;P.running=false;P.left=0;save();sfx('tick');renderPomo();},
   pomoSkip(){const P=S.pomo;P.running=false;P.left=0;P.mode=P.mode==='work'?'brk':'work';if(P.mode==='work')P.brkNow=0;save();sfx('swipe');renderPomo();},
   pomoMode(el){const P=S.pomo;if(P.mode===el.dataset.m)return;P.running=false;P.left=0;P.mode=el.dataset.m;save();sfx('pop');renderPomo();},
-  pomoPreset(el){const P=S.pomo;P.work=+el.dataset.w;P.brk=+el.dataset.b;P.brkNow=0;P.running=false;P.left=0;save();sfx('pop');renderPomo();}
+  pomoCustom(){S.pomo.custom=!S.pomo.custom;save();renderPomo();sfx('tick');},
+  pomoSetCustom(){const P=S.pomo,w=Math.max(1,Math.min(180,parseInt(v('pmW'))||25)),b=Math.max(0,Math.min(60,parseInt(v('pmB'))||0));P.work=w;P.brk=b||1;P.brkNow=0;P.running=false;P.left=0;save();renderPomo();sfx('pop');toast(w+'分の集中にしました');},
+  pomoPreset(el){const P=S.pomo;P.custom=false;P.work=+el.dataset.w;P.brk=+el.dataset.b;P.brkNow=0;P.running=false;P.left=0;save();sfx('pop');renderPomo();}
 });
 document.addEventListener('change',e=>{if(e.target.matches('[data-pomo-focus]')){S.pomo.focus=e.target.value;save();}});
 
@@ -1771,10 +1841,9 @@ Object.assign(A,{
   graduate(el){const c=cp(),h=find(c.habits,el.dataset.id);if(!h)return;const snap=JSON.stringify(S);
     c.grad.push({id:h.id,title:h.title,at:todayKey(),total:Object.keys(h.log).length,log:h.log});c.habits=c.habits.filter(x=>x!==h);S.coins+=30;S.badges['g'+h.id]=todayKey();
     save();render();sfx('fanfare');burst();toast('「'+h.title+'」をマスター！',{label:'元に戻す',fn:()=>{S=JSON.parse(snap);normalize();save();render();}});},
-  updateGoalVal(el){const g=find(cp().goals,el.dataset.id);if(!g)return;
-    openSheet('今の数字',`<div class="field"><label for="gvNow">${esc(g.title)}（目標 ${fmtNum(g.target)}${esc(g.unit||'')}）</label><input id="gvNow" type="number" inputmode="decimal" value="${g.cur??''}"></div>`,
-    ()=>{const n=parseFloat(v('gvNow'));if(isNaN(n))return false;g.cur=n;setHist(g,n);
+  updateGoalVal(el){const g=find(cp().goals,el.dataset.id);if(!g)return;numSheet(g,()=>{const n=numNow(g);
       if(!g.cleared&&n>=+g.target){const t=todayKey();setTimeout(()=>{sfx('fanfare');commit(t,()=>{g.cleared=t;g.clearedBy='num';},XP.goal);cpCleared(g);},50);}else toast('記録しました');});},
+  updateCompassVal(){const c=cp();numSheet(c,()=>{toast(numNow(c)>=+c.target?'🎉 ゴールの数字に届きました！':'記録しました');});},
   editPlan(){const c=cp();openSheet('ピンチのとき',fld('pl1','ピンチになりそうなこと',c.obstacle,'text','例：疲れて帰ると何もしたくない')+fld('pl2','そのときの行動',c.plan,'text','例：PCを開いて5分だけやる'),
     ()=>{c.obstacle=v('pl1');c.plan=v('pl2');});},
   openReview(){rvStep=0;rv={wins:'',obstacle:'',plans:{},cues:{},auto:{},gv:{},w:'',waist:''};const el=$('#rv');el.hidden=false;renderReview();sfx('swipe');},
