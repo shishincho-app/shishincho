@@ -664,6 +664,29 @@ body.setup .setup-wrap{background:none}
 .pm-custom{display:flex;gap:8px;align-items:center;width:100%}
 .pm-custom input{flex:1;min-width:0;font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:2px solid rgba(255,255,255,.4);background:rgba(255,255,255,.2);color:#fff;text-align:center}
 .pm-custom span{font-size:13px;font-weight:700}
+
+/* journal */
+.jrow{display:block}
+.jbtn{display:flex;align-items:center;gap:10px;padding:14px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);text-align:left;font-weight:800;font-size:15px;min-width:0}
+.jbtn .qi{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--calm) 40%,var(--soft));color:var(--fg)}
+.jbtn.pm .qi{background:color-mix(in srgb,var(--violet) 30%,var(--soft))}
+.jbtn small{display:block;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jbtn.done small{color:var(--primary)}
+.jbtn.now{box-shadow:0 0 0 3px var(--primary),0 5px 0 0 color-mix(in srgb,var(--primary) 50%,var(--line))}
+.jq{margin:0;font-size:20px;font-weight:900;line-height:1.4}
+.jhints{display:flex;flex-wrap:wrap;gap:6px}
+.jhints span{font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--soft);color:var(--muted)}
+#jText{font:inherit;font-size:17px;line-height:1.8;min-height:180px;width:100%;box-sizing:border-box;padding:14px;border-radius:16px;border:2px solid var(--line);background:var(--bg);color:var(--fg);resize:vertical}
+#jText:focus{outline:none;border-color:var(--primary)}
+.mic{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:18px;font-weight:800;font-size:16px;background:var(--primary);color:#fff;box-shadow:0 5px 0 color-mix(in srgb,var(--primary) 60%,#000)}
+.mic.on{background:#F04438;animation:micpulse 1.2s ease-in-out infinite}
+@keyframes micpulse{50%{box-shadow:0 5px 0 #a1271f,0 0 0 10px rgba(240,68,56,.18)}}
+.mic-note{margin:0;font-size:12px;color:var(--muted);text-align:center}
+.jlist .item{align-items:flex-start;cursor:pointer}
+.jlist .jd{flex:none;width:48px;font-family:var(--f-disp);font-weight:800;font-size:14px;color:var(--primary);padding-top:2px}
+.jlist .jt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.6}
+.jlist .jt b{font-size:11px;color:var(--muted);margin-right:6px}
+.jlist .jt span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 </style>
 
 </head><body>
@@ -737,7 +760,8 @@ function normalize(){
   if(!S.since){const ks=Object.keys(S.days||{});S.compasses.forEach(c=>[...c.starters,...c.habits].forEach(x=>ks.push(...Object.keys(x.log||{}))));S.since=ks.sort()[0]||todayKey();} if(S.lastBackup===undefined)S.lastBackup=0;
   if(S.pomo.brkNow===undefined)S.pomo.brkNow=0;
   S.base=S.base||{wake:'06:30',sleep:'23:00',set:false}; S.baseLog=S.baseLog||{}; S.reviews=S.reviews||[]; S.mit=S.mit||{};
-  S.prep=S.prep||{}; S.mood=S.mood||{}; if(S.moodOn===undefined)S.moodOn=false; if(S.bodyOn===undefined)S.bodyOn=false; S.body=S.body||[];
+  S.prep=S.prep||{}; S.mood=S.mood||{}; S.journal=S.journal||{};
+  Object.keys(S.journal).forEach(k=>{const j=S.journal[k];if(Array.isArray(j))return;const a=[];if(j&&j.am)a.push({id:uid(),at:'08:00',text:j.am});if(j&&j.pm)a.push({id:uid(),at:'21:00',text:j.pm});S.journal[k]=a;}); if(S.moodOn===undefined)S.moodOn=false; if(S.bodyOn===undefined)S.bodyOn=false; S.body=S.body||[];
   S.compasses.forEach(c=>{c.todos=c.todos||[];if(c.target>0&&!c.kind)c.kind='total';c.goals.forEach(g=>{if(g.target>0&&!g.kind)g.kind='total';});c.goals.forEach(g=>{if(g.cleared===undefined){g.cleared=((g.target>0&&(+g.cur||0)>=+g.target)||(g.tasks&&g.tasks.length&&g.tasks.every(t=>t.done)))?(g.doneAt||todayKey()):null;}});});
   S.compasses.forEach(c=>{c.created=c.created||S.since||todayKey();c.obstacle=c.obstacle||'';c.plan=c.plan||'';c.grad=c.grad||[];c.habits.forEach(h=>{h.auto=h.auto||[];});
     c.starters.forEach(x=>{x.prep=x.prep||'';});c.goals.forEach(g=>{g.hist=g.hist||[];g.created=g.created||S.since||todayKey();});});
@@ -928,6 +952,7 @@ function viewHome(){
   <div class="list">${rows.join('')||'<div class="empty">下の「＋ 追加」から</div>'}</div>
   ${y?'':'<button class="add" data-act="addItem">＋ 追加</button>'}
   ${y?'<button class="subtle c" data-act="toToday">今日に戻る</button>':(editMode?'':'<button class="subtle c" data-act="toYesterday">昨日の分をつける</button>')}</section>
+  ${y?'':journalRow()}
   ${y?'':quickRow()}`;
 }
 function climbCard(){
@@ -949,6 +974,7 @@ function quickRow(){const P=S.pomo, ev=isEvening(), nightKey=new Date().getHours
 function viewRecord(){
   return `${heatHTML()}
   <button class="qbtn" data-act="openReview"><span class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12a8 8 0 108-8M4 4v4h4"/></svg></span><span>週末ふりかえり<small>${S.lastReview?`前回 ${S.lastReview.slice(5).replace('-','/')}`:'3分・+30 XP'}</small></span></button>
+  ${journalListHTML()}
   ${foundationHTML()}
   ${insightHTML()}`;
 }
@@ -1347,7 +1373,7 @@ function openSheet(title,body,save,del){
   const f=$('#sheetIn').querySelector('input,textarea'); if(f) setTimeout(()=>f.focus(),50);
 }
 let sheetTheme=null;
-function closeSheet(){$('#scrim').hidden=true;$('#sheet').hidden=true;onSave=null;if(S.setup&&!adding)applyTheme();}
+function closeSheet(){if(typeof stopRec==='function')stopRec();$('#scrim').hidden=true;$('#sheet').hidden=true;onSave=null;if(S.setup&&!adding)applyTheme();}
 const newHabit=(t,o={})=>{const m=SUGG_META[t]||{};return {id:uid(),title:t,cue:o.cue||'',slot:o.slot||m.slot||'any',freq:o.freq||m.freq||7,log:{},auto:[]};};
 const habitFields=h=>fld('h1','やること',h.title,'text')+fld('h0','いつやる？（〇〇したら）',h.cue,'text')
   +`<div class="field"><label>時間帯</label><div class="seg" id="hSlot">${SLOTS.map(([k,n])=>`<button type="button" data-act="segPick" data-v="${k}" aria-pressed="${(h.slot||'any')===k}">${n}</button>`).join('')}</div></div>
@@ -1450,6 +1476,50 @@ function numSheet(o,after){const u=esc(o.unit||''),mon=o.kind==='month';
   const b=$('#sheetIn .btn.primary');if(b)b.textContent='記録する';
 }
 
+/* ---------- journal (voice) ---------- */
+// Morning and night are suggested moments; entries can be added any time, as many as you like.
+const JQ={am:['今日はどんな1日にする？',['今日の1番','楽しみなこと','気分','気をつけること']],pm:['今日はどうだった？',['できたこと','うまくいかなかったこと','気づいたこと','明日は']],any:['いま、なにを考えてる？',['思いついたこと','気になること','アイデア','メモ']]};
+const jSlotNow=()=>{const h=new Date().getHours();return h>=4&&h<11?'am':(h>=19||h<4)?'pm':'any';};
+const jDay=k=>S.journal[k]||(S.journal[k]=[]);
+const nowHM=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes());};
+function journalRow(){
+  const t=todayKey(),list=S.journal[t]||[],slot=jSlotNow(),inSlot=list.some(e=>slot==='am'?e.at<'11:00':slot==='pm'?e.at>='19:00':false);
+  const nudge=slot==='am'&&!inSlot?'朝のジャーナル：'+JQ.am[0]:slot==='pm'&&!inSlot?'夜のジャーナル：'+JQ.pm[0]:list.length?`今日 ${list.length}件・最後 ${list[list.length-1].at}`:'思いついたら、いつでも話して残せます';
+  return `<button class="jbtn ${slot!=='any'&&!inSlot?'now':''} ${slot==='pm'?'pm':''}" data-act="openJournal" style="width:100%"><span class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></span><span style="min-width:0;flex:1">ジャーナル・メモ<small>${esc(nudge)}</small></span><span style="font-size:22px;color:var(--primary)">＋</span></button>`;
+}
+function journalListHTML(){
+  const ks=Object.keys(S.journal).filter(k=>(S.journal[k]||[]).length).sort().reverse().slice(0,30);
+  const cnt=ks.reduce((a,k)=>a+S.journal[k].length,0);
+  return `<section class="panel">${head('','ジャーナル',`<button class="link" data-act="openJournal">＋ 書く</button>`)}${ks.length?`<div class="list jlist">${ks.map(k=>{const [,m,d]=k.split('-').map(Number);
+    return [...S.journal[k]].sort((a,b)=>a.at<b.at?1:-1).map((e,i)=>`<div class="item" data-act="editJournal" data-day="${k}" data-id="${e.id}" role="button" tabindex="0"><span class="jd">${i===0?`${m}/${d}`:''}</span><span class="jt"><span><b>${e.at}</b>${esc(e.text)}</span></span></div>`).join('');}).join('')}</div><p class="hint" style="margin:0;font-size:12px;color:var(--muted)">全部で${cnt}件（最近30日分を表示）</p>`
+    :'<div class="list"><div class="empty">ホームの「ジャーナル・メモ」から、話して残せます</div></div>'}</section>`;}
+function journalSheet(dayK,entry){
+  const slot=entry?(entry.at<'11:00'?'am':entry.at>='19:00'?'pm':'any'):jSlotNow(),[q,hints]=JQ[slot],[,m,d]=dayK.split('-').map(Number);
+  openSheet(entry?`${m}/${d} ${entry.at} のメモ`:'ジャーナル・メモ',`${entry?'':`<p class="jq">${q}</p><div class="jhints">${hints.map(h=>`<span>${h}</span>`).join('')}</div>`}
+    <textarea id="jText" placeholder="ここに書くか、下のボタンを押して話してください">${esc(entry?entry.text:'')}</textarea>
+    <button type="button" class="mic" id="micBtn" data-act="toggleMic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg><span>話して入力</span></button>
+    <p class="mic-note">${SR?'うまくいかないときは、キーボードのマイクでも話せます':'iPhoneのキーボードのマイクを押すと、話して入力できます'}</p>`,
+    ()=>{stopRec();const t=($('#jText').value||'').trim();
+      if(entry){if(t)entry.text=t;else S.journal[dayK]=jDay(dayK).filter(e=>e!==entry);}
+      else if(t)jDay(dayK).push({id:uid(),at:nowHM(),text:t});
+      sfx('pop');toast(t?'保存しました':'空のまま閉じました');},
+    entry?()=>{stopRec();S.journal[dayK]=jDay(dayK).filter(e=>e!==entry);}:null);
+  const b=$('#sheetIn .btn.primary');if(b)b.textContent='保存する';
+}
+let rec=null, recBase='';
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function stopRec(){try{rec&&rec.stop();}catch(e){}rec=null;const b=$('#micBtn');if(b){b.classList.remove('on');b.querySelector('span').textContent='話して入力';}}
+function startRec(){
+  const ta=$('#jText'),b=$('#micBtn');if(!ta||!b)return;
+  if(!SR){toast('このアプリではマイクボタンが使えません。キーボードのマイクで話してください');ta.focus();return}
+  try{rec=new SR();}catch(e){toast('マイクを使えませんでした。キーボードのマイクで話してください');ta.focus();return}
+  rec.lang='ja-JP';rec.continuous=true;rec.interimResults=true;recBase=ta.value?(ta.value.replace(/\s+$/,'')+(/[。！？\n]$/.test(ta.value.trim())||!ta.value.trim()?'':'。')):'';
+  rec.onresult=e=>{let fin='',mid='';for(let i=0;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)fin+=r[0].transcript;else mid+=r[0].transcript;}ta.value=recBase+fin+mid;};
+  rec.onerror=e=>{const m=e.error==='not-allowed'||e.error==='service-not-allowed'?'マイクの使用が許可されていません。キーボードのマイクで話せます':e.error==='no-speech'?'声が聞き取れませんでした':'音声入力が止まりました';toast(m);stopRec();};
+  rec.onend=()=>{if(rec){stopRec();}};
+  try{rec.start();b.classList.add('on');b.querySelector('span').textContent='話し終わったらタップ';sfx('focus');}catch(e){toast('マイクを使えませんでした。キーボードのマイクで話してください');rec=null;}
+}
+
 /* ---------- actions ---------- */
 const find=(arr,id)=>arr.find(x=>x.id===id);
 const A={
@@ -1502,6 +1572,9 @@ const A={
     if(a==='goMap'){location.hash='#goals';return}
     if(A[a])A[a](el);},
   freezeInfo(){openSheet('おやすみ券',`<div class="frz-card">${SNOW('var(--ice)',30)}<div><b>${S.freezes}</b> 枚<p>1日休んでも連続記録は続きます。2日以上休んだときは、この券を自動で使って記録を守ります。7日続けるごとに1枚もらえます（最大3枚）。</p></div></div>`,null);},
+  openJournal(){journalSheet(todayKey(),null);},
+  editJournal(el){const k=el.dataset.day,e=(S.journal[k]||[]).find(x=>x.id===el.dataset.id);if(e)journalSheet(k,e);},
+  toggleMic(){if(rec)stopRec();else startRec();},
   toggleEdit(){editMode=!editMode;render();sfx('tick');},
   fillTitle(el){const i=$('#'+el.dataset.f);if(i){i.value=el.dataset.t;}el.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===el));sfx('tick');},
   toYesterday(){viewDay=key(addDays(new Date(),-1));render();scrollTo(0,0);sfx('swipe');},
