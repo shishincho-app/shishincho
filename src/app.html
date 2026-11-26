@@ -677,6 +677,39 @@ body.setup .setup-wrap{background:none}
 .jlist .jt{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.6}
 .jlist .jt b{font-size:11px;color:var(--muted);margin-right:6px}
 .jlist .jt span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* streak celebration (Duolingo-style) */
+#streak{position:fixed;inset:0;z-index:102;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;overflow:hidden;isolation:isolate;color:#fff;
+  background:radial-gradient(circle at 50% 38%,#FFB800 0%,#FF6A00 38%,#E8124F 100%);padding:calc(30px + env(safe-area-inset-top,0px)) max(24px,env(safe-area-inset-left,0px)) calc(30px + env(safe-area-inset-bottom,0px))}
+#streak.cold{background:radial-gradient(circle at 50% 38%,#8FD3FF 0%,#4A7BFF 45%,#3B2BD9 100%)}
+#streak .rays{position:absolute;z-index:-1;left:50%;top:36%;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;
+  background:repeating-conic-gradient(rgba(255,255,255,.16) 0 9deg,transparent 9deg 22.5deg);animation:spin 18s linear infinite;-webkit-mask:radial-gradient(circle,#000 18%,transparent 62%);mask:radial-gradient(circle,#000 18%,transparent 62%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stk-flame{width:150px;height:170px;filter:drop-shadow(0 10px 0 rgba(0,0,0,.15));animation:flamein .7s cubic-bezier(.2,1.6,.4,1) both,flicker 1.1s ease-in-out .7s infinite}
+.stk-flame .o{fill:#fff}.stk-flame .i{fill:#FFD400}
+#streak.cold .stk-flame .i{fill:#8FD3FF}
+@keyframes flamein{from{transform:scale(0) rotate(-25deg)}to{transform:scale(1)}}
+@keyframes flicker{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.06,1.1) rotate(2deg)}}
+.stk-num{font-family:var(--f-disp);font-weight:800;font-size:clamp(5.5rem,30vw,8.5rem);line-height:.95;letter-spacing:-.04em;text-shadow:0 6px 0 rgba(0,0,0,.18);margin-top:-8px}
+.stk-num.pop{animation:numpop .55s cubic-bezier(.2,1.8,.4,1)}
+@keyframes numpop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.stk-num.tick{animation:numtick .16s ease-out}
+@keyframes numtick{from{transform:translateY(-10px) scale(1.08);opacity:.6}}
+#streak h2{margin:0;font-size:30px;font-weight:900;text-shadow:0 3px 0 rgba(0,0,0,.15);animation:rise .5s .35s both}
+#streak .msg{margin:0;font-size:16px;font-weight:700;opacity:.95;max-width:320px;animation:rise .5s .5s both}
+.stk-week{display:grid;grid-template-columns:repeat(7,40px);gap:8px;margin-top:14px;padding:14px 12px;border-radius:22px;background:rgba(255,255,255,.18)}
+.stk-week div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:800}
+.stk-week i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.25);transform:scale(.4);opacity:0}
+.stk-week i.on{background:#fff;color:#FF6A00}
+.stk-week i.frz{background:#8FD3FF;color:#fff}
+.stk-week i.today{box-shadow:0 0 0 3px #fff}
+.stk-week i.show{animation:dotpop .4s cubic-bezier(.2,1.8,.4,1) forwards}
+@keyframes dotpop{to{transform:scale(1);opacity:1}}
+.stk-frz{font-size:13px;font-weight:800;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.2);animation:rise .5s .8s both}
+.stk-go{margin-top:18px;width:min(100%,360px);padding:17px;border-radius:18px;background:#fff;color:#FF4D00;font-weight:900;font-size:18px;box-shadow:0 6px 0 rgba(0,0,0,.2);animation:rise .5s 1s both}
+#streak.cold .stk-go{color:#3B2BD9}
+.stk-go:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+@media (prefers-reduced-motion: reduce){#streak .rays,.stk-flame{animation:none}}
 </style>
 
 <header id="bar"></header>
@@ -697,6 +730,7 @@ body.setup .setup-wrap{background:none}
 <canvas id="fx"></canvas>
 <div id="splash" hidden></div>
 <div id="pomo" hidden></div>
+<div id="streak" hidden></div>
 <div id="rv" class="ov" hidden></div>
 
 <script>
@@ -795,14 +829,16 @@ function checkBadges(){let got=null;const st=streak(),tot=totalDays();
   return got;}
 // Apply a change to the logs of day k, then settle XP, coins, the daily achievement and badges.
 function commit(k,mutate,xp){
-  const wasA=achieved(k), stB=streak(), lvB=levelInfo(S.xp).lv;
+  const wasA=achieved(k), stB=streak(), lvB=levelInfo(S.xp).lv, wasK=kept(k);
   mutate();
   const d=day(k); d.xp=Math.max(0,(d.xp||0)+xp); S.xp=Math.max(0,S.xp+xp); S.coins=Math.max(0,S.coins+Math.round(xp/5));
   const isA=achieved(k); let party=false;
   if(!wasA&&isA&&!d.bonus){d.bonus=true;S.coins+=DAY_BONUS;if(k===todayKey()&&!d.cele){d.cele=true;party=true;}}
   else if(wasA&&!isA&&d.bonus){d.bonus=false;S.coins=Math.max(0,S.coins-DAY_BONUS);}
   const badge=checkBadges(); save(); render();
-  if(party){sfx('fanfare');celebrate(streak(),badge,streak()>stB);}
+  const ext=k===todayKey()&&!viewDay&&!wasK&&kept(k)&&streak()>0;
+  if(ext){showStreak('extend');if(party)afterStreak=()=>{sfx('fanfare');celebrate(streak(),badge,false);};}
+  else if(party){sfx('fanfare');celebrate(streak(),badge,streak()>stB);}
   else if(!wasA&&isA)toast('今日のノルマ、クリア！');
   if(isA||kept(k))earnFreeze();
   if(xp>0&&levelInfo(S.xp).lv>lvB)setTimeout(()=>{sfx('level');toast('レベル '+levelInfo(S.xp).lv+' に上がりました')},party?2600:400);
@@ -1564,6 +1600,7 @@ const A={
   openJournal(){journalSheet(todayKey(),null);},
   editJournal(el){const k=el.dataset.day,e=(S.journal[k]||[]).find(x=>x.id===el.dataset.id);if(e)journalSheet(k,e);},
   toggleMic(){if(rec)stopRec();else startRec();},
+  closeStreak(){$('#streak').hidden=true;sfx('pop');const f=afterStreak;afterStreak=null;if(f)setTimeout(f,60);},
   toggleEdit(){editMode=!editMode;render();sfx('tick');},
   fillTitle(el){const i=$('#'+el.dataset.f);if(i){i.value=el.dataset.t;}el.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===el));sfx('tick');},
   toYesterday(){viewDay=key(addDays(new Date(),-1));render();scrollTo(0,0);sfx('swipe');},
@@ -1711,6 +1748,12 @@ function sfx(name){
     [N.D6,N.Fs6,N.A6].forEach(f=>bell(f,t+.68,.32,.07,2,1));}
   if(name==='focus'){sub(N.D3/2,t,.18,.45);bell(N.A5,t+.02,.12,.1,2,1);bell(N.D6,t+.1,.16,.1,2,1);}
   if(name==='pause'){bell(N.D6,t,.1,.08,2,1);bell(N.A5,t+.08,.12,.08,2,1);}
+  if(name==='stkTick'){const f=[N.D5,N.E5,N.Fs5,N.A5,N.B5,N.D6,N.E6,N.Fs6,N.A6,N.B6][Math.min(9,sfx.step|0)];bell(f,t,.09,.16,2,1.6);blip(f*2,t,.05,.03);}
+  if(name==='stkWhoosh'){air(t,.45,300,8000,.16);sub(N.D3/2,t+.38,.35,.6);}
+  if(name==='stkBoom'){sub(N.D3/2,t,.45,.75);air(t,.3,800,9000,.14);
+    [N.D5,N.Fs5,N.A5,N.D6,N.Fs6,N.A6,N.D6*2].forEach((f,i)=>bell(f,t+.05+i*.055,.22,.14,2,1.5,(i%2?.4:-.4)));
+    [N.D6,N.Fs6,N.A6].forEach(f=>bell(f,t+.5,.5,.1,2,1.1));blip(N.A6,t+.5,.06,.05);}
+  if(name==='stkDot'){bell(N.A6,t,.07,.07,3.5,.8);}
   if(name==='done'){for(let r=0;r<3;r++){[N.D6,N.Fs6,N.A6].forEach((f,i)=>bell(f,t+r*.42+i*.07,.14,.13,2,1.4));}sub(N.D3/2,t+1.2,.3,.5);}
   }catch(e){}
 }
@@ -1748,10 +1791,41 @@ function showSplash(){
   sp.hidden=false; sp.classList.remove('out');
   sp.onclick=e=>{if(!e.target.closest('[data-act]'))dismissSplash();};
 }
+/* ---------- streak celebration ---------- */
+let afterStreak=null;
+function showStreak(mode){ // mode: 'open' (first open of the day) | 'extend' (first action of the day)
+  const el=$('#streak'),st=streak(),t=todayKey(),keptToday=kept(t),from=mode==='extend'?Math.max(0,st-1):0,to=st;
+  const wk=['日','月','火','水','木','金','土'],ws=weekStart();
+  const week=[...Array(7)].map((_,i)=>{const k=key(addDays(ws,i)),d=S.days[k]||{},s2=dayStats(k),on=s2.st+s2.hb>0||!!d.legacyKept||!!(S.pomo.log[k]&&S.pomo.log[k].n),fz=!!d.frozen&&!on;
+    return `<div><i class="${on?'on':fz?'frz':''} ${k===t?'today':''}">${on?'<svg width="18" height="20" viewBox="0 0 30 34"><path fill="currentColor" d="M15 1c2 6 9 9 9 19a9 9 0 01-18 0c0-5 3-7 4-11 1 3 2 4 3 4 0-5 0-8 2-12z"/></svg>':fz?SNOW('#fff',16):''}</i>${wk[i]}</div>`;}).join('');
+  const msg=mode==='extend'?(st>=2?'連続記録をのばした！この調子！':'連続記録スタート！明日も続けよう')
+    :keptToday?'今日の分はもうやりました。最高！'
+    :st?`今日ひとつやれば <b>${st+1}日</b> 連続！`:'今日から連続記録をはじめよう';
+  const cold=!st&&mode!=='extend';
+  el.className=cold?'cold':'';
+  el.innerHTML=`<div class="rays"></div>
+  <svg class="stk-flame" viewBox="0 0 30 34" aria-hidden="true"><path class="o" d="M15 1c2 6 9 9 9 19a9 9 0 01-18 0c0-5 3-7 4-11 1 3 2 4 3 4 0-5 0-8 2-12z"/><path class="i" d="M15 17c1 3 4 4 4 8a4 4 0 01-8 0c0-2 1-3 2-5 .5 1 1 1.5 1.5 1.5 0-2 0-3 .5-4.5z"/></svg>
+  <div class="stk-num" id="stkN" aria-live="polite">${from}</div>
+  <h2>${st?'日連続！':'連続記録'}</h2>
+  <p class="msg">${msg}</p>
+  <div class="stk-week">${week}</div>
+  ${S.freezes?`<span class="stk-frz">${SNOW('#fff',13)} おやすみ券 ${S.freezes}枚</span>`:''}
+  <button class="stk-go" data-act="closeStreak">${mode==='extend'?'つづける':'今日をはじめる'}</button>`;
+  el.hidden=false;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, n=$('#stkN');
+  sfx('stkWhoosh');
+  const steps=Math.max(0,to-from), dur=reduce?0:Math.min(1400,Math.max(500,steps*70)), t0=performance.now()+420;let last=from;sfx.step=0;
+  const finish=()=>{n.textContent=to;n.classList.remove('tick');void n.offsetWidth;n.classList.add('pop');if(to>0){sfx('stkBoom');burst();}
+    el.querySelectorAll('.stk-week i').forEach((d,i)=>setTimeout(()=>{d.classList.add('show');if(d.classList.contains('on'))sfx('stkDot');},reduce?0:120+i*90));};
+  if(!steps||reduce){setTimeout(finish,reduce?0:450);return}
+  (function f(now){const p=Math.min(1,Math.max(0,(now-t0)/dur)),v=Math.round(from+(to-from)*(1-Math.pow(1-p,2)));
+    if(v!==last){last=v;n.textContent=v;n.classList.remove('tick');void n.offsetWidth;n.classList.add('tick');sfx.step=Math.round((v-from)/Math.max(1,steps)*9);if(steps<=14||v%Math.ceil(steps/14)===0)sfx('stkTick');}
+    if(p<1)requestAnimationFrame(f);else finish();})(performance.now());
+}
 function dismissSplash(){
   const sp=$('#splash'); if(sp.hidden||sp.classList.contains('out'))return;
-  sfx('launch'); sp.classList.add('out');
-  setTimeout(()=>{playIntro();},180);
+  sp.classList.add('out');
+  showStreak('open');afterStreak=()=>playIntro();
   setTimeout(()=>{sp.hidden=true;sp.classList.remove('out');},760);
 }
 function playIntro(){
@@ -1930,7 +2004,7 @@ function switchCompass(i,dir){
 }
 (function(){
   let x0=0,y0=0,dx=0,mode=null;
-  const blocked=t=>!S.setup||adding||tab==='tips'||!$('#sheet').hidden||!$('#cele').hidden||!$('#splash').hidden||!$('#pomo').hidden||!$('#rv').hidden||t.closest('input,textarea,select,.sheet,nav');
+  const blocked=t=>!S.setup||adding||tab==='tips'||!$('#sheet').hidden||!$('#cele').hidden||!$('#splash').hidden||!$('#streak').hidden||!$('#pomo').hidden||!$('#rv').hidden||t.closest('input,textarea,select,.sheet,nav');
   addEventListener('touchstart',e=>{if(e.touches.length!==1||blocked(e.target)){mode='off';return}x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;mode=null;},{passive:true});
   addEventListener('touchmove',e=>{if(mode==='off'||switching)return;const x=e.touches[0].clientX-x0,y=e.touches[0].clientY-y0;
     if(!mode){if(Math.abs(x)>10&&Math.abs(x)>Math.abs(y)*1.4)mode='h';else if(Math.abs(y)>10)mode='v';}
